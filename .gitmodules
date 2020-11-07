@@ -1,0 +1,3 @@
+[submodule "whirlpool_stats"]
+	path = whirlpool_stats
+	url = https://code.samourai.io/whirlpool/whirlpool_stats.git

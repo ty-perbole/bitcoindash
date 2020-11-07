@@ -24,3 +24,8 @@ __pycache__/
 
 README.md
 btc.csv
+
+whirlpool_0*.csv
+whirlpool_l*.csv
+whirlpool_m*.csv
+whirlpool_t*.csv
