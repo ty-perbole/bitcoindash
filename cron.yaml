@@ -1,4 +1,4 @@
-#cron:
+cron:
 #- description: "refresh data"
 #  url:  /dataRefresh/
 #  schedule: every day 06:00
