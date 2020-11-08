@@ -7,7 +7,7 @@ import chart_utils
 CHART_HEIGHT = '400px'
 
 def figures(start_date, end_date, date_granularity, axis_type):
-    ln_data_clean = pd.read_csv('ln_data_clean.csv')
+    ln_data_clean = pd.read_csv('data/ln_data_clean.csv')
     ln_data_clean_filter = ln_data_clean.loc[
         (ln_data_clean['date_granularity'] == date_granularity)
       & (ln_data_clean['date_period'] >= start_date)

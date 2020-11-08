@@ -14,7 +14,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
       & (whirlpool_data_clean['date_period'] <= end_date)
     ]
 
-    bisq_data_clean = pd.read_csv('bisq_data_clean.csv')
+    bisq_data_clean = pd.read_csv('data/bisq_data_clean.csv')
     bisq_data_clean_filter = bisq_data_clean.loc[
         (bisq_data_clean['date_granularity'] == date_granularity)
         & (bisq_data_clean['date_period'] >= start_date)

@@ -21,4 +21,4 @@ for date_granularity in ['day', 'week', 'month', 'year', 'halving_era', 'market_
     ].copy()
 
 clean_data = pd.concat(dfs, ignore_index=True)
-clean_data.to_csv('node_count_data_clean.csv', index=False)
+clean_data.to_csv('./data/node_count_data_clean.csv', index=False)

@@ -67,4 +67,4 @@ for date_granularity in ['day', 'week', 'month', 'year', 'halving_era', 'market_
     ].copy()
 
 clean_data = pd.concat(dfs, ignore_index=True)
-clean_data.fillna(0).to_csv('whirlpool_data_clean.csv', index=False)
+clean_data.fillna(0).to_csv('./data/whirlpool_data_clean.csv', index=False)

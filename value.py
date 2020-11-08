@@ -7,14 +7,14 @@ import chart_utils
 CHART_HEIGHT = '400px'
 
 def figures(start_date, end_date, date_granularity, axis_type):
-    cm_data_clean = pd.read_csv('cm_data_clean.csv')
+    cm_data_clean = pd.read_csv('data/cm_data_clean.csv')
     cm_data_clean_filter = cm_data_clean.loc[
         (cm_data_clean['date_granularity'] == date_granularity)
       & (cm_data_clean['date_period'] >= start_date)
       & (cm_data_clean['date_period'] <= end_date)
     ]
 
-    wave_data = pd.read_csv('waves_data_clean2.csv')
+    wave_data = pd.read_csv('data/waves_data_clean2.csv')
     wave_data_filter = wave_data.loc[
         (wave_data['date_granularity'] == date_granularity)
         & (wave_data['date_period'] >= start_date)
