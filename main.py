@@ -5,6 +5,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import datetime
+import subprocess
 from flask import Flask, Response
 import gc
 
@@ -200,6 +201,7 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
 
 @server.route('/dataRefresh/', methods=['GET'])
 def dataRefresh():
+    subprocess.run("gsutil -m rsync gs://bitcoinkpis-data/data ./data", shell=True, check=True)
     sys.stdout.write('Finished all refresh jobs')
     return Response("Finished data refresh", mimetype='text/plain')
 
