@@ -198,18 +198,6 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
     else:
         return html.H4(" ")
 
-@server.route('/dataRefresh/', methods=['GET'])
-def dataRefresh():
-    # subprocess.run("gsutil -m rsync gs://bitcoinkpis.appspot.com/data ./data", shell=True, check=True)
-    # storage_client = storage.Client()
-    #
-    # bucket = storage_client.bucket('gs://bitcoinkpis.appspot.com')
-    # blob = bucket.blob('/data/')
-    # blob.download_to_filename('./data/')
-    #
-    # sys.stdout.write('Finished all refresh jobs')
-    return Response("Finished data refresh", mimetype='text/plain')
-
 if __name__ == '__main__':
     # server.run(ssl_context='adhoc')
     app.run_server(host='0.0.0.0', port=8080)

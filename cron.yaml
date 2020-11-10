@@ -1,5 +1,1 @@
 cron:
-- description: "refresh data"
-  url:  /dataRefresh/
-  schedule: every day 06:00
-  timezone: America/Los_Angeles
