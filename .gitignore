@@ -132,3 +132,5 @@ dmypy.json
 *.ipynb
 .ipynb_checkpoints
 .venvs
+
+*.dump
