@@ -1,9 +1,7 @@
-import sys
 import pandas as pd
 
 import utils
-
-def run():
+try:
     node_count = pd.read_csv('https://luke.dashjr.org/programs/bitcoin/files/charts/data/history.txt', sep=' ', header=None)
     node_count.columns = ['ts', 'listening_node', 'total_nodes']
     node_count
@@ -23,5 +21,6 @@ def run():
         ].copy()
 
     clean_data = pd.concat(dfs, ignore_index=True)
-    clean_data.to_csv('node_count_data_clean.csv', index=False)
-    sys.stdout.write('Updated node_count_data_clean.csv  /n')
+    clean_data.to_csv('./data/node_count_data_clean.csv', index=False)
+except:
+    pass

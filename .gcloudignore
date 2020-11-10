@@ -29,3 +29,7 @@ whirlpool_0*.csv
 whirlpool_l*.csv
 whirlpool_m*.csv
 whirlpool_t*.csv
+
+dash/
+
+*.dump

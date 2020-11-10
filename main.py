@@ -9,10 +9,9 @@ from flask import Flask, Response
 import gc
 
 import value, blockspace, security, privacy, layer2
-import data_cm, data_node, data_wp
 
 server = Flask(__name__)
-app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SLATE])
+app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SLATE], eager_loading=True)
 app.title = 'Bitcoin KPIs'
 
 app.layout = dbc.Container([
@@ -198,14 +197,6 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
                 ''')
     else:
         return html.H4(" ")
-
-@server.route('/dataRefresh/', methods=['GET'])
-def dataRefresh():
-    data_cm.run()
-    data_node.run()
-    data_wp.run()
-    sys.stdout.write('Finished all refresh jobs')
-    return Response("Finished data refresh", mimetype='text/plain')
 
 if __name__ == '__main__':
     # server.run(ssl_context='adhoc')

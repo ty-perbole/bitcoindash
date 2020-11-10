@@ -1,4 +1,3 @@
-import sys
 import datetime
 import pandas as pd
 
@@ -12,9 +11,9 @@ from whirlpool_stats.whirlpool_stats.services.backward_metrics import BackwardMe
 from whirlpool_stats.whirlpool_stats.services.tx0s_metrics import Tx0sMetrics
 from whirlpool_stats.whirlpool_stats.services.exporter import Exporter
 
-WORKING_DIR = "."
+try:
+    WORKING_DIR = "."
 
-def run():
     downloader = Downloader()
     downloader.download(WORKING_DIR, ALL_DENOMS)
 
@@ -69,5 +68,6 @@ def run():
         ].copy()
 
     clean_data = pd.concat(dfs, ignore_index=True)
-    clean_data.fillna(0).to_csv('whirlpool_data_clean.csv', index=False)
-    sys.stdout.write('Updated whirlpool_data_clean.csv /n')
+    clean_data.fillna(0).to_csv('./data/whirlpool_data_clean.csv', index=False)
+except:
+    pass

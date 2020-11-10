@@ -7,14 +7,14 @@ import chart_utils
 CHART_HEIGHT = '400px'
 
 def figures(start_date, end_date, date_granularity, axis_type):
-    cm_data_clean = pd.read_csv('cm_data_clean.csv')
+    cm_data_clean = pd.read_csv('data/cm_data_clean.csv')
     cm_data_clean_filter = cm_data_clean.loc[
         (cm_data_clean['date_granularity'] == date_granularity)
       & (cm_data_clean['date_period'] >= start_date)
       & (cm_data_clean['date_period'] <= end_date)
     ]
 
-    mempool_data_clean = pd.read_csv('mempool_data_clean.csv')
+    mempool_data_clean = pd.read_csv('data/mempool_data_clean.csv')
     mempool_data_clean_filter = mempool_data_clean.loc[
         (mempool_data_clean['date_granularity'] == date_granularity)
         & (mempool_data_clean['date_period'] >= start_date)

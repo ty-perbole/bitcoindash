@@ -1,12 +1,9 @@
 import os
-import sys
 import subprocess
 import pandas as pd
 
 import utils
-
-def run():
-
+try:
     try:
         os.remove("btc.csv")
     except FileNotFoundError:
@@ -51,5 +48,6 @@ def run():
         ].copy()
 
     clean_data = pd.concat(dfs, ignore_index=True)
-    clean_data.to_csv('cm_data_clean.csv', index=False)
-    sys.stdout.write('Updated cm_data_clean.csv  /n')
+    clean_data.to_csv('./data/cm_data_clean.csv', index=False)
+except:
+    pass
