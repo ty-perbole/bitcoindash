@@ -7,4 +7,4 @@ python data_node.py
 python data_wp.py
 
 /home/admin/google/google-cloud-sdk/bin/gsutil -m rsync ./data gs://bitcoinkpis-data/data
-gcloud beta app deploy
+/home/admin/google/google-cloud-sdk/bin/gcloud --quiet beta app deploy
