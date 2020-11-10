@@ -5,14 +5,13 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import datetime
-import subprocess
 from flask import Flask, Response
 import gc
 
 import value, blockspace, security, privacy, layer2
 
 server = Flask(__name__)
-app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SLATE])
+app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SLATE], eager_loading=True)
 app.title = 'Bitcoin KPIs'
 
 app.layout = dbc.Container([
@@ -201,8 +200,14 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
 
 @server.route('/dataRefresh/', methods=['GET'])
 def dataRefresh():
-    subprocess.run("gsutil -m rsync gs://bitcoinkpis-data/data ./data", shell=True, check=True)
-    sys.stdout.write('Finished all refresh jobs')
+    # subprocess.run("gsutil -m rsync gs://bitcoinkpis.appspot.com/data ./data", shell=True, check=True)
+    # storage_client = storage.Client()
+    #
+    # bucket = storage_client.bucket('gs://bitcoinkpis.appspot.com')
+    # blob = bucket.blob('/data/')
+    # blob.download_to_filename('./data/')
+    #
+    # sys.stdout.write('Finished all refresh jobs')
     return Response("Finished data refresh", mimetype='text/plain')
 
 if __name__ == '__main__':

@@ -23,3 +23,4 @@ Werkzeug==1.0.1
 gunicorn==19.5.0
 requests[socks]
 datasketch
+google-cloud-storage
