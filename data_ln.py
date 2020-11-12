@@ -1,31 +1,8 @@
-import os
-import subprocess
 import pandas as pd
 import numpy as np
 
 import utils
 try:
-    # try:
-    #     os.remove("lnchannels.dump")
-    # except FileNotFoundError:
-    #     pass
-    # subprocess.run("wget https://ln.bigsun.xyz/lnchannels.dump", shell=True, check=True)
-    # subprocess.run("dropdb ln", shell=True, check=True)
-    # subprocess.run("createdb ln", shell=True, check=True)
-    # subprocess.run("psql ln < lnchannels.dump", shell=True, check=True)
-    # subprocess.run('''psql ln -c "COPY (
-    #                     SELECT
-    #                         short_channel_id
-    #                       , satoshis
-    #                       , nodes::json->0 AS node1
-    #                       , nodes::json->1 AS node2
-    #                       , (open->>'time')::int AS open_ts
-    #                       , (open->>'block')::int AS open_block
-    #                       , (close->>'time')::int AS close_ts
-    #                       , (close->>'block')::int AS close_block
-    #                       , last_update
-    #                     FROM channels)
-    #                     TO '/home/admin/bitcoindash/ln_channels.csv' DELIMITER ',' CSV HEADER;"''', shell=True, check=True)
 
     lnchan = pd.read_csv("/home/admin/bitcoindash/ln_channels.csv")
     lnchan['open_ts'] = pd.to_datetime(lnchan['open_ts'] * 1000000000)
