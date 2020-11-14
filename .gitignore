@@ -134,3 +134,5 @@ dmypy.json
 .venvs
 
 *.dump
+
+refresh_data_laptop.sh

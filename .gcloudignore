@@ -33,3 +33,5 @@ whirlpool_t*.csv
 dash/
 
 *.dump
+
+refresh_data_laptop.sh
