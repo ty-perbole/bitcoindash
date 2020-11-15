@@ -1,4 +1,3 @@
-import sys
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -100,8 +99,8 @@ app.layout = dbc.Container([
                     dbc.Tab(
                         label='Stack Stats',
                         tab_id='stack-stats-tab',
-                        # tab_style={"color": 'rgb(0, 128, 0)'},
-                        # label_style={"color": 'rgb(0, 128, 0)'}
+                        tab_style={"color": 'rgb(242, 169, 0)'},
+                        label_style={"color": 'rgb(242, 169, 0)'}
                     ),
 
                     dbc.Tab(
@@ -130,14 +129,10 @@ app.layout = dbc.Container([
      Output('log-linear-picker', 'value')],
     [Input('date-granularity-picker', 'value')])
 def set_inputs_on_granularity(date_granularity):
-    # min_date_allowed = datetime.date(2009, 1, 3),
-    # max_date_allowed = datetime.datetime.now(),
-    # start_date = ,
-    # end_date = datetime.datetime.now()
     if date_granularity in ('day', 'week'):
         return [datetime.datetime.now() - datetime.timedelta(365), datetime.datetime.now(), 'linear']
     elif date_granularity == 'rhr_week':
-        return [datetime.datetime.now() - datetime.timedelta(28 * 3), datetime.datetime.now(), 'linear']
+        return [datetime.datetime.now() - datetime.timedelta(28 * 6), datetime.datetime.now(), 'linear']
     elif date_granularity == 'month':
         return [datetime.datetime.now() - datetime.timedelta(365 * 2), datetime.datetime.now(), 'linear']
     elif date_granularity == 'year':
@@ -202,5 +197,4 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
         return html.H4(" ")
 
 if __name__ == '__main__':
-    # server.run(ssl_context='adhoc')
     app.run_server(host='0.0.0.0', port=8080)

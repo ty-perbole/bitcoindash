@@ -30,6 +30,7 @@ try:
         sums['BlockSpacePrice'] = sums['FeeTotNtv'] * 10 ** 8 / sums['BlkSizeByte']
         sums['BlockSpacePriceUSD'] = sums['FeeTotUSD'] * 100 / sums['BlkSizeByte']
         sums['TransactionDensity'] = sums['TxTfrValUSD'] / sums['BlkSizeByte']
+        sums['CentsPerEH'] = (sums['SecuritySpend'] / (sums['HashRate'] * 60 * 60 * 24)) * 100
         sums['HashRate'] = sums['HashRate'] / 1000000
         sums['HashRateCum'] = sums['HashRate'].cumsum()
         sums.drop(columns='HashRate', inplace=True)
@@ -43,7 +44,8 @@ try:
              'TxTfrValAdjUSD', 'SecuritySpend',
              'ThermoCap', 'SecuritySpendRatio',
              'BlockSpacePrice', 'BlockSpacePriceUSD',
-             'TransactionDensity', 'ChainReWriteDays'
+             'TransactionDensity', 'ChainReWriteDays',
+             'CentsPerEH'
             ] + median_metrics
         ].copy()
 

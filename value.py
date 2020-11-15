@@ -29,12 +29,6 @@ def figures(start_date, end_date, date_granularity, axis_type):
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
-    # real_cap.update_layout(
-    #     # transition_duration=500,
-    #     # autosize=False,
-    #     width=500*1.61,
-    #     height=500,
-    # )
 
     hodl_wave = chart_utils.hodl_waves_chart2(
         wave_data_filter,
@@ -49,7 +43,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
 
     tx_vol = chart_utils.single_axis_chart(
         cm_data_clean_filter, x_series='date_period', y_series='TxTfrValAdjUSD',
-        title='Transaction Volume', y_series_title='Transaction Volume ($USD)',
+        title='Transaction Volume ($USD, Adjusted for Change)', y_series_title='Transaction Volume ($USD)',
         y_series_axis_type=axis_type,
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
