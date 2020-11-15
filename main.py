@@ -39,6 +39,7 @@ app.layout = dbc.Container([
                     options=[
                         {'label': 'Daily', 'value': 'day'},
                         {'label': 'Weekly', 'value': 'week'},
+                        {'label': 'RHR Mode (Th-Wed week)', 'value': 'rhr_week'},
                         {'label': 'Monthly', 'value': 'month'},
                         {'label': 'Yearly', 'value': 'year'},
                         {'label': 'Halving Era', 'value': 'halving_era'},
@@ -135,6 +136,8 @@ def set_inputs_on_granularity(date_granularity):
     # end_date = datetime.datetime.now()
     if date_granularity in ('day', 'week'):
         return [datetime.datetime.now() - datetime.timedelta(365), datetime.datetime.now(), 'linear']
+    elif date_granularity == 'rhr_week':
+        return [datetime.datetime.now() - datetime.timedelta(28 * 3), datetime.datetime.now(), 'linear']
     elif date_granularity == 'month':
         return [datetime.datetime.now() - datetime.timedelta(365 * 2), datetime.datetime.now(), 'linear']
     elif date_granularity == 'year':

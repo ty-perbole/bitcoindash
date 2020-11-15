@@ -21,7 +21,7 @@ try:
         'SplyCur', 'IssTotNtv', 'TxTfrValNtv', 'TxTfrValUSD', 'HashRate'
     ]
 
-    for date_granularity in ['day', 'week', 'month', 'year', 'halving_era', 'market_cycle']:
+    for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
         medians = cm.groupby(by=date_granularity, as_index=False)[median_metrics].median()
         sums = cm.groupby(by=date_granularity, as_index=False)[sum_metrics].sum()
         sums['SecuritySpend'] = sums['IssTotUSD'] + sums['FeeTotUSD']

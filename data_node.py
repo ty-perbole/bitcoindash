@@ -12,7 +12,7 @@ try:
 
     dfs = {}
 
-    for date_granularity in ['day', 'week', 'month', 'year', 'halving_era', 'market_cycle']:
+    for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
         out = node_count.groupby(by=date_granularity, as_index=False)['total_nodes'].median()
         out['date_period'] = out[date_granularity]
         out['date_granularity'] = date_granularity

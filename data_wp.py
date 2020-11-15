@@ -53,7 +53,7 @@ try:
 
     dfs = {}
 
-    for date_granularity in ['day', 'week', 'month', 'year', 'halving_era', 'market_cycle']:
+    for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
         out = wp.groupby(by=[date_granularity], as_index=False)['nb_new_btc', 'nb_active_btc', 'volume'].sum()
         pools = wp.groupby(by=[date_granularity, 'pool'], as_index=False)['volume'].sum().pivot(index=date_granularity, columns='pool', values='volume')
         out = out.merge(pools, on=date_granularity)
