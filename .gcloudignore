@@ -24,7 +24,7 @@ __pycache__/
 
 README.md
 
-*.csv
+./*.csv
 
 /dash/
 /dash-gcp/

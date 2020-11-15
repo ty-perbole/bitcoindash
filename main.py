@@ -39,7 +39,7 @@ app.layout = dbc.Container([
                     options=[
                         {'label': 'Daily', 'value': 'day'},
                         {'label': 'Weekly', 'value': 'week'},
-                        {'label': 'RHR Mode (Th-Wed week)', 'value': 'rhr_week'},
+                        {'label': 'RHR Mode (Weekly Thurs-Weds)', 'value': 'rhr_week'},
                         {'label': 'Monthly', 'value': 'month'},
                         {'label': 'Yearly', 'value': 'year'},
                         {'label': 'Halving Era', 'value': 'halving_era'},
