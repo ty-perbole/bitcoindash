@@ -46,7 +46,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
     cents_per_eh = chart_utils.single_axis_chart(
         cm_data_clean_filter, x_series='date_period', y_series='CentsPerEH',
         title='Hash price: Cents per ExaHash', y_series_title='Cents USD per Exa-Hash',
-        y_series_axis_type=axis_type, y_series_axis_format='e',
+        y_series_axis_type=axis_type, y_series_axis_format='1.00e1',
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
