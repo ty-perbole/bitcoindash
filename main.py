@@ -72,46 +72,46 @@ app.layout = dbc.Container([
             dbc.Col([
                 dbc.Tabs([
                     dbc.Tab(
-                        label='Security',
+                        label='🔒 Security',
                         tab_id='security-tab'
                     ),
 
                     dbc.Tab(
-                        label='Block Space Economics',
+                        label='📈 Block Space Economics',
                         tab_id='bsm-tab'
                     ),
 
                     dbc.Tab(
-                        label='Value & Uptake',
+                        label='💰 Value & Uptake',
                         tab_id='value-tab'
                     ),
 
                     dbc.Tab(
-                        label='Privacy & Fungibility',
+                        label='😎 Privacy & Fungibility',
                         tab_id='privacy-tab'
                     ),
 
                     dbc.Tab(
-                        label='Layer 2',
+                        label='⚡ Layer 2',
                         tab_id='layer2-tab'
                     ),
 
                     dbc.Tab(
-                        label='Stack Stats',
+                        label='✏️ Stack Stats️',
                         tab_id='stack-stats-tab',
                         tab_style={"color": 'rgb(242, 169, 0)'},
                         label_style={"color": 'rgb(242, 169, 0)'}
                     ),
 
                     dbc.Tab(
-                        label='About',
+                        label='🤔 About',
                         tab_id='about-tab',
                         # tab_style={"color": 'rgb(0, 128, 0)'},
                         # label_style={"color": 'rgb(0, 128, 0)'}
                     ),
 
                     dbc.Tab(
-                        label='Donate',
+                        label='🤲 Donate',
                         tab_id='donate-tab',
                         # tab_style={"color": 'rgb(242, 169, 0)'},
                         # label_style={"color": 'rgb(242, 169, 0)'}

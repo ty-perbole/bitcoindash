@@ -36,15 +36,14 @@ try:
         sums.drop(columns='HashRate', inplace=True)
         medians['HashRate'] = medians['HashRate'] / 1000000
         out = sums.merge(medians, how='outer', on=date_granularity)
-        out['ChainReWriteDays'] = sums['HashRateCum'] / out['HashRate']
+        out['ChainRewriteDays'] = sums['HashRateCum'] / out['HashRate']
         out['date_period'] = out[date_granularity]
         out['date_granularity'] = date_granularity
         dfs[date_granularity] = out[
             ['date_granularity', 'date_period',
-             'TxTfrValAdjUSD', 'SecuritySpend',
-             'ThermoCap', 'SecuritySpendRatio',
+             'TxTfrValAdjUSD', 'SecuritySpendRatio',
              'BlockSpacePrice', 'BlockSpacePriceUSD',
-             'TransactionDensity', 'ChainReWriteDays',
+             'TransactionDensity', 'ChainRewriteDays',
              'CentsPerEH'
             ] + median_metrics
         ].copy()

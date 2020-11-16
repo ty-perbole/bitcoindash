@@ -25,7 +25,6 @@ def figures(start_date, end_date, date_granularity, axis_type):
     hash_rate = chart_utils.single_axis_chart(
         cm_data_clean_filter, x_series='date_period', y_series='HashRate',
         title='Hash Rate', y_series_title='Hash Rate (EH/s)',
-        # y_series_axis_format="${n},",
         y_series_axis_type=axis_type,
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
@@ -37,24 +36,17 @@ def figures(start_date, end_date, date_granularity, axis_type):
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
-    # chain_rewrite_days = chart_utils.single_axis_chart(
-    #     cm_data_clean_filter, x_series='date_period', y_series='ChainReWriteDays',
-    #     title='Chain ReWrite Days at Period Hash Rate', y_series_title='Days to ReWrite Chain',
-    #     y_series_axis_type=axis_type,
-    #     bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-    #     halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
-
-    cents_per_eh = chart_utils.single_axis_chart(
-        cm_data_clean_filter, x_series='date_period', y_series='CentsPerEH',
-        title='Cents per Exa-Hash', y_series_title='Cents USD per Exa-Hash',
-        y_series_axis_type=axis_type, y_series_axis_format='e',
+    chain_rewrite_days = chart_utils.single_axis_chart(
+        cm_data_clean_filter, x_series='date_period', y_series='ChainRewriteDays',
+        title='Chain Rewrite Days at Period Hash Rate', y_series_title='Days to Rewrite Chain',
+        y_series_axis_type=axis_type,
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
-    security_spend = chart_utils.single_axis_chart(
-        cm_data_clean_filter, x_series='date_period', y_series='SecuritySpend',
-        title='Security Spend ($USD over period)', y_series_title='Security Spend ($USD)',
-        y_series_axis_type=axis_type,
+    cents_per_eh = chart_utils.single_axis_chart(
+        cm_data_clean_filter, x_series='date_period', y_series='CentsPerEH',
+        title='Hash price: Cents per ExaHash', y_series_title='Cents USD per Exa-Hash',
+        y_series_axis_type=axis_type, y_series_axis_format='e',
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
@@ -109,6 +101,18 @@ def figures(start_date, end_date, date_granularity, axis_type):
         dbc.Row([
             dbc.Col([
                 dcc.Graph(
+                    figure=chain_rewrite_days,
+                    id='chain_rewrite_days',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about Chain Rewrite Days'),
+                    html.P('''
+                    Chain Rewrite days is the number of days it would take to rewrite the entire Bitcoin blockchain using the current level of hashpower. It is calculated by dividing the cumulative hash by the current rate.''')
+                ])
+            ], width={"size": 6}),
+            dbc.Col([
+                dcc.Graph(
                     figure=cents_per_eh,
                     id='cents_per_eh',
                     style={'height': CHART_HEIGHT}
@@ -116,31 +120,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
                 html.Details([
                     html.Summary('Tell me about Cents Per ExaHash'),
                     html.P('''
-                        Cents per ExaHash is the $USD amount miners are compensated in block rewards and fees for each ExaHash they produce during the period.''')
-                ])
-            ], width={"size": 6}),
-            # dbc.Col([
-            #     dcc.Graph(
-            #         figure=chain_rewrite_days,
-            #         id='chain_rewrite_days',
-            #         style={'height': CHART_HEIGHT}
-            #     ),
-            #     html.Details([
-            #         html.Summary('Tell me about Chain ReWrite Days'),
-            #         html.P('''
-            #         Chain ReWrite days is the number of days it would take to rewrite the entire Bitcoin blockchain using the current level of hashpower. It is calculated by dividing the cumulative hash by the current rate.''')
-            #     ])
-            # ], width={"size": 6}),
-            dbc.Col([
-                dcc.Graph(
-                    figure=security_spend,
-                    id='security_spend',
-                    style={'height': CHART_HEIGHT}
-                ),
-                html.Details([
-                    html.Summary('Tell me about Secuirty Spend'),
-                    html.P('''
-                    Security Spend is the total amount of block rewards and blackspace fees collected by miners over the period, in $USD.''')
+                            Cents per ExaHash is the $USD amount miners are compensated in block rewards and fees for each ExaHash they produce during the period.''')
                 ])
             ], width={"size": 6}),
         ], justify="center")
