@@ -43,10 +43,10 @@ def figures(start_date, end_date, date_granularity, axis_type):
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
-    cents_per_eh = chart_utils.single_axis_chart(
-        cm_data_clean_filter, x_series='date_period', y_series='CentsPerEH',
-        title='Hash price: Cents per ExaHash', y_series_title='Cents USD per Exa-Hash',
-        y_series_axis_type=axis_type, y_series_axis_format='1.00e1',
+    dollars_per_yh = chart_utils.single_axis_chart(
+        cm_data_clean_filter, x_series='date_period', y_series='DollarsPerYH',
+        title='Hash Price: $USD per Yottahash', y_series_title='$USD per Yottahash',
+        y_series_axis_type=axis_type,# y_series_axis_format='1.00e1',
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
@@ -113,14 +113,14 @@ def figures(start_date, end_date, date_granularity, axis_type):
             ], width={"size": 6}),
             dbc.Col([
                 dcc.Graph(
-                    figure=cents_per_eh,
-                    id='cents_per_eh',
+                    figure=dollars_per_yh,
+                    id='dollars_per_yh',
                     style={'height': CHART_HEIGHT}
                 ),
                 html.Details([
-                    html.Summary('Tell me about Cents Per ExaHash'),
+                    html.Summary('Tell me about $USD per Yottahash'),
                     html.P('''
-                            Cents per ExaHash is the $USD amount miners are compensated in block rewards and fees for each ExaHash they produce during the period.''')
+                            $USD per Yottahash is the amount miners are compensated in block rewards and fees for each Yottahash they produce during the period.''')
                 ])
             ], width={"size": 6}),
         ], justify="center")

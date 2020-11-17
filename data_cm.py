@@ -4,11 +4,11 @@ import pandas as pd
 
 import utils
 try:
-    try:
-        os.remove("btc.csv")
-    except FileNotFoundError:
-        pass
-    subprocess.run("wget https://coinmetrics.io/newdata/btc.csv", shell=True, check=True)
+    # try:
+    #     os.remove("btc.csv")
+    # except FileNotFoundError:
+    #     pass
+    # subprocess.run("wget https://coinmetrics.io/newdata/btc.csv", shell=True, check=True)
 
     cm = pd.read_csv('btc.csv')
 
@@ -31,6 +31,7 @@ try:
         sums['BlockSpacePriceUSD'] = sums['FeeTotUSD'] * 100 / sums['BlkSizeByte']
         sums['TransactionDensity'] = sums['TxTfrValUSD'] / sums['BlkSizeByte']
         sums['CentsPerEH'] = (sums['SecuritySpend'] / (sums['HashRate'] * 60 * 60 * 24)) * 100
+        sums['DollarsPerYH'] = (sums['SecuritySpend'] / (sums['HashRate'] * 60 * 60 * 24 * (10 ** -6)))
         sums['HashRate'] = sums['HashRate'] / 1000000
         sums['HashRateCum'] = sums['HashRate'].cumsum()
         sums.drop(columns='HashRate', inplace=True)
@@ -44,7 +45,7 @@ try:
              'TxTfrValAdjUSD', 'SecuritySpendRatio',
              'BlockSpacePrice', 'BlockSpacePriceUSD',
              'TransactionDensity', 'ChainRewriteDays',
-             'CentsPerEH'
+             'DollarsPerYH'
             ] + median_metrics
         ].copy()
 
