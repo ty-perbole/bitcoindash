@@ -7,7 +7,7 @@ import chart_utils
 CHART_HEIGHT = '400px'
 
 def figures(start_date, end_date, date_granularity, axis_type):
-    whirlpool_data_clean = pd.read_csv('whirlpool_data_clean.csv')
+    whirlpool_data_clean = pd.read_csv('data/whirlpool_data_clean.csv')
     whirlpool_data_clean_filter = whirlpool_data_clean.loc[
         (whirlpool_data_clean['date_granularity'] == date_granularity)
       & (whirlpool_data_clean['date_period'] >= start_date)

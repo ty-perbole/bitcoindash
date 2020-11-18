@@ -36,4 +36,10 @@ python data_wp.py
 python data_ln.py
 
 /home/admin/google/google-cloud-sdk/bin/gsutil -m rsync ./data gs://bitcoinkpis-data/data
-/home/admin/google/google-cloud-sdk/bin/gcloud --quiet app deploy
+
+{
+  /home/admin/google/google-cloud-sdk/bin/gcloud --quiet app deploy
+  } || {
+  /home/admin/google/google-cloud-sdk/bin/gsutil -m rm -rf gs://staging.bitcoinkpis.appspot.com/*
+  /home/admin/google/google-cloud-sdk/bin/gcloud --quiet app deploy
+}

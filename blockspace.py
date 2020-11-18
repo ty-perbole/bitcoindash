@@ -31,14 +31,14 @@ def figures(start_date, end_date, date_granularity, axis_type):
     security_spend = chart_utils.single_axis_chart(
         cm_data_clean_filter, x_series='date_period', y_series='SecuritySpendRatio',
         title='Security Spend Ratio', y_series_title='Security Spend Ratio',
-        y_series_axis_type=axis_type,
+        y_series_axis_type=axis_type, y_series_axis_format='1.00e1',
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
     mempool = chart_utils.single_axis_chart(
         mempool_data_clean_filter, x_series='date_period', y_series='total_fee_btc',
-        title='Block Space Fees Queued in Mempool (Stale data)', y_series_title='Total Block Space Fees (BTC)',
-        y_series_axis_type='log', data_source='mempool.space',
+        title='Block Space Fees Queued in Mempool (Updated Weekly)', y_series_title='Total Block Space Fees (BTC)',
+        y_series_axis_type=axis_type, data_source='mempool.space',
         bars=len(mempool_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 

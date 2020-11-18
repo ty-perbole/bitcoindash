@@ -26,7 +26,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
         ln_data_clean_filter, x_series='date_period', y_series='node_liquidity_herfindahl',
         title='Public Lightning Node Liquidity Herfindahl Index', y_series_title='Herfindahl Index',
         # y_series_axis_format="${n},",
-        y_series_axis_type='log', data_source='ln.bigsun.xyz',
+        y_series_axis_type=axis_type, data_source='ln.bigsun.xyz',
         bars=len(ln_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 

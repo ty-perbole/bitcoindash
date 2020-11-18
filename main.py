@@ -1,4 +1,3 @@
-import sys
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -39,6 +38,7 @@ app.layout = dbc.Container([
                     options=[
                         {'label': 'Daily', 'value': 'day'},
                         {'label': 'Weekly', 'value': 'week'},
+                        {'label': 'RHR Mode (Weekly Thurs-Weds)', 'value': 'rhr_week'},
                         {'label': 'Monthly', 'value': 'month'},
                         {'label': 'Yearly', 'value': 'year'},
                         {'label': 'Halving Era', 'value': 'halving_era'},
@@ -72,46 +72,46 @@ app.layout = dbc.Container([
             dbc.Col([
                 dbc.Tabs([
                     dbc.Tab(
-                        label='Security',
+                        label='🔒 Security',
                         tab_id='security-tab'
                     ),
 
                     dbc.Tab(
-                        label='Block Space Economics',
+                        label='📈 Block Space Economics',
                         tab_id='bsm-tab'
                     ),
 
                     dbc.Tab(
-                        label='Value & Uptake',
+                        label='💰 Value & Uptake',
                         tab_id='value-tab'
                     ),
 
                     dbc.Tab(
-                        label='Privacy & Fungibility',
+                        label='😎 Privacy & Fungibility',
                         tab_id='privacy-tab'
                     ),
 
                     dbc.Tab(
-                        label='Layer 2',
+                        label='⚡ Layer 2',
                         tab_id='layer2-tab'
                     ),
 
                     dbc.Tab(
-                        label='Stack Stats',
+                        label='✏️ Stack Stats️',
                         tab_id='stack-stats-tab',
-                        # tab_style={"color": 'rgb(0, 128, 0)'},
-                        # label_style={"color": 'rgb(0, 128, 0)'}
+                        tab_style={"color": 'rgb(242, 169, 0)'},
+                        label_style={"color": 'rgb(242, 169, 0)'}
                     ),
 
                     dbc.Tab(
-                        label='About',
+                        label='🤔 About',
                         tab_id='about-tab',
                         # tab_style={"color": 'rgb(0, 128, 0)'},
                         # label_style={"color": 'rgb(0, 128, 0)'}
                     ),
 
                     dbc.Tab(
-                        label='Donate',
+                        label='🤲 Donate',
                         tab_id='donate-tab',
                         # tab_style={"color": 'rgb(242, 169, 0)'},
                         # label_style={"color": 'rgb(242, 169, 0)'}
@@ -129,12 +129,10 @@ app.layout = dbc.Container([
      Output('log-linear-picker', 'value')],
     [Input('date-granularity-picker', 'value')])
 def set_inputs_on_granularity(date_granularity):
-    # min_date_allowed = datetime.date(2009, 1, 3),
-    # max_date_allowed = datetime.datetime.now(),
-    # start_date = ,
-    # end_date = datetime.datetime.now()
     if date_granularity in ('day', 'week'):
         return [datetime.datetime.now() - datetime.timedelta(365), datetime.datetime.now(), 'linear']
+    elif date_granularity == 'rhr_week':
+        return [datetime.datetime.now() - datetime.timedelta(28 * 6), datetime.datetime.now(), 'linear']
     elif date_granularity == 'month':
         return [datetime.datetime.now() - datetime.timedelta(365 * 2), datetime.datetime.now(), 'linear']
     elif date_granularity == 'year':
@@ -199,5 +197,4 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
         return html.H4(" ")
 
 if __name__ == '__main__':
-    # server.run(ssl_context='adhoc')
     app.run_server(host='0.0.0.0', port=8080)

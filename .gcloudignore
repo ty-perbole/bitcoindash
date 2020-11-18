@@ -23,13 +23,12 @@ __pycache__/
 .venvs
 
 README.md
-btc.csv
 
-whirlpool_0*.csv
-whirlpool_l*.csv
-whirlpool_m*.csv
-whirlpool_t*.csv
+./*.csv
 
-dash/
+/dash/
+/dash-gcp/
 
 *.dump
+
+*.sh

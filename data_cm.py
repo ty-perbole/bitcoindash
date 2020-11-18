@@ -21,7 +21,7 @@ try:
         'SplyCur', 'IssTotNtv', 'TxTfrValNtv', 'TxTfrValUSD', 'HashRate'
     ]
 
-    for date_granularity in ['day', 'week', 'month', 'year', 'halving_era', 'market_cycle']:
+    for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
         medians = cm.groupby(by=date_granularity, as_index=False)[median_metrics].median()
         sums = cm.groupby(by=date_granularity, as_index=False)[sum_metrics].sum()
         sums['SecuritySpend'] = sums['IssTotUSD'] + sums['FeeTotUSD']
@@ -30,20 +30,22 @@ try:
         sums['BlockSpacePrice'] = sums['FeeTotNtv'] * 10 ** 8 / sums['BlkSizeByte']
         sums['BlockSpacePriceUSD'] = sums['FeeTotUSD'] * 100 / sums['BlkSizeByte']
         sums['TransactionDensity'] = sums['TxTfrValUSD'] / sums['BlkSizeByte']
+        sums['CentsPerEH'] = (sums['SecuritySpend'] / (sums['HashRate'] * 60 * 60 * 24)) * 100
+        sums['DollarsPerYH'] = (sums['SecuritySpend'] / (sums['HashRate'] * 60 * 60 * 24 * (10 ** -6)))
         sums['HashRate'] = sums['HashRate'] / 1000000
         sums['HashRateCum'] = sums['HashRate'].cumsum()
         sums.drop(columns='HashRate', inplace=True)
         medians['HashRate'] = medians['HashRate'] / 1000000
         out = sums.merge(medians, how='outer', on=date_granularity)
-        out['ChainReWriteDays'] = sums['HashRateCum'] / out['HashRate']
+        out['ChainRewriteDays'] = sums['HashRateCum'] / out['HashRate']
         out['date_period'] = out[date_granularity]
         out['date_granularity'] = date_granularity
         dfs[date_granularity] = out[
             ['date_granularity', 'date_period',
-             'TxTfrValAdjUSD', 'SecuritySpend',
-             'ThermoCap', 'SecuritySpendRatio',
+             'TxTfrValAdjUSD', 'SecuritySpendRatio',
              'BlockSpacePrice', 'BlockSpacePriceUSD',
-             'TransactionDensity', 'ChainReWriteDays'
+             'TransactionDensity', 'ChainRewriteDays',
+             'DollarsPerYH'
             ] + median_metrics
         ].copy()
 

@@ -25,7 +25,6 @@ def figures(start_date, end_date, date_granularity, axis_type):
     hash_rate = chart_utils.single_axis_chart(
         cm_data_clean_filter, x_series='date_period', y_series='HashRate',
         title='Hash Rate', y_series_title='Hash Rate (EH/s)',
-        # y_series_axis_format="${n},",
         y_series_axis_type=axis_type,
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
@@ -33,22 +32,21 @@ def figures(start_date, end_date, date_granularity, axis_type):
     node_count = chart_utils.single_axis_chart(
         nc_data_clean_filter, x_series='date_period', y_series='total_nodes',
         title='Bitcoin Node Count', y_series_title='Number of Bitcoin Nodes',
-        # y_series_axis_format="${n},",
         y_series_axis_type=axis_type, data_source='luke.dashjr.org',
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
     chain_rewrite_days = chart_utils.single_axis_chart(
-        cm_data_clean_filter, x_series='date_period', y_series='ChainReWriteDays',
-        title='Chain ReWrite Days at Period Hash Rate', y_series_title='Days to ReWrite Chain',
+        cm_data_clean_filter, x_series='date_period', y_series='ChainRewriteDays',
+        title='Chain Rewrite Days at Period Hash Rate', y_series_title='Days to Rewrite Chain',
         y_series_axis_type=axis_type,
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
-    security_spend = chart_utils.single_axis_chart(
-        cm_data_clean_filter, x_series='date_period', y_series='SecuritySpend',
-        title='Security Spend', y_series_title='Security Spend ($USD)',
-        y_series_axis_type=axis_type,
+    dollars_per_yh = chart_utils.single_axis_chart(
+        cm_data_clean_filter, x_series='date_period', y_series='DollarsPerYH',
+        title='Hash Price: $USD per Yottahash', y_series_title='$USD per Yottahash',
+        y_series_axis_type=axis_type,# y_series_axis_format='1.00e1',
         bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
@@ -108,21 +106,21 @@ def figures(start_date, end_date, date_granularity, axis_type):
                     style={'height': CHART_HEIGHT}
                 ),
                 html.Details([
-                    html.Summary('Tell me about Chain ReWrite Days'),
+                    html.Summary('Tell me about Chain Rewrite Days'),
                     html.P('''
-                    Chain ReWrite days is the number of days it would take to rewrite the entire Bitcoin blockchain using the current level of hashpower. It is calculated by dividing the cumulative hash by the current rate.''')
+                    Chain Rewrite days is the number of days it would take to rewrite the entire Bitcoin blockchain using the current level of hashpower. It is calculated by dividing the cumulative hash by the current rate.''')
                 ])
             ], width={"size": 6}),
             dbc.Col([
                 dcc.Graph(
-                    figure=security_spend,
-                    id='security_spend',
+                    figure=dollars_per_yh,
+                    id='dollars_per_yh',
                     style={'height': CHART_HEIGHT}
                 ),
                 html.Details([
-                    html.Summary('Tell me about Secuirty Spend'),
+                    html.Summary('Tell me about $USD per Yottahash'),
                     html.P('''
-                    Security Spend is the total amount of block rewards and blackspace fees collected by miners over the period, in $USD.''')
+                            $USD per Yottahash is the amount miners are compensated in block rewards and fees for each Yottahash they produce during the period.''')
                 ])
             ], width={"size": 6}),
         ], justify="center")

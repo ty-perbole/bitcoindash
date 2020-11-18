@@ -4,7 +4,7 @@ import numpy as np
 import utils
 try:
 
-    lnchan = pd.read_csv("/home/admin/bitcoindash/ln_channels.csv")
+    lnchan = pd.read_csv("ln_channels.csv")
     lnchan['open_ts'] = pd.to_datetime(lnchan['open_ts'] * 1000000000)
     lnchan['close_ts'] = pd.to_datetime(lnchan['close_ts'] * 1000000000)
 
@@ -37,7 +37,7 @@ try:
 
     dfs = {}
 
-    for date_granularity in ['day', 'week', 'month', 'year', 'halving_era', 'market_cycle']:
+    for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
         out = lnmetrics.groupby(by=[date_granularity], as_index=False)[
             'channel_count', 'channel_value', 'nodes_w_channels', 'node_liquidity_herfindahl'].median()
         out['date_period'] = out[date_granularity]
