@@ -4,11 +4,11 @@ import pandas as pd
 
 import utils
 try:
-    # try:
-    #     os.remove("btc.csv")
-    # except FileNotFoundError:
-    #     pass
-    # subprocess.run("wget https://coinmetrics.io/newdata/btc.csv", shell=True, check=True)
+    try:
+        os.remove("btc.csv")
+    except FileNotFoundError:
+        pass
+    subprocess.run("wget https://coinmetrics.io/newdata/btc.csv", shell=True, check=True)
 
     cm = pd.read_csv('btc.csv')
 
