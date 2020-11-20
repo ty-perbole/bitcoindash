@@ -15,7 +15,7 @@ try:
     cm = utils.get_extra_datetime_cols(cm, 'date')
 
     dfs = {}
-    median_metrics = ['CapRealUSD', 'CapMVRVCur', 'HashRate']
+    median_metrics = ['CapMrktCurUSD', 'CapRealUSD', 'CapMVRVCur', 'HashRate']
     sum_metrics = [
         'TxTfrValAdjUSD', 'IssTotUSD', 'FeeTotUSD', 'FeeTotNtv', 'BlkSizeByte',
         'SplyCur', 'IssTotNtv', 'TxTfrValNtv', 'TxTfrValUSD', 'HashRate'

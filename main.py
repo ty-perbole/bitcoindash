@@ -27,7 +27,7 @@ app.layout = dbc.Container([
             dbc.Col(dcc.DatePickerRange(
                 id='date-picker-range',
                 min_date_allowed=datetime.date(2009, 1, 3),
-                max_date_allowed=datetime.datetime.now(),
+                max_date_allowed=datetime.datetime.now() - datetime.timedelta(1),
                 start_date=datetime.datetime.now() - datetime.timedelta(365*4),
                 end_date=datetime.datetime.now()
             ), width={"size": 4}),
@@ -130,13 +130,13 @@ app.layout = dbc.Container([
     [Input('date-granularity-picker', 'value')])
 def set_inputs_on_granularity(date_granularity):
     if date_granularity in ('day', 'week'):
-        return [datetime.datetime.now() - datetime.timedelta(365), datetime.datetime.now(), 'linear']
+        return [datetime.datetime.now() - datetime.timedelta(365), datetime.datetime.now() - datetime.timedelta(1), 'linear']
     elif date_granularity == 'rhr_week':
-        return [datetime.datetime.now() - datetime.timedelta(28 * 6), datetime.datetime.now(), 'linear']
+        return [datetime.datetime.now() - datetime.timedelta(28 * 6), datetime.datetime.now() - datetime.timedelta(1), 'linear']
     elif date_granularity == 'month':
-        return [datetime.datetime.now() - datetime.timedelta(365 * 2), datetime.datetime.now(), 'linear']
+        return [datetime.datetime.now() - datetime.timedelta(365 * 2), datetime.datetime.now() - datetime.timedelta(1), 'linear']
     elif date_granularity == 'year':
-        return [datetime.datetime.now() - datetime.timedelta(365 * 10), datetime.datetime.now(), 'log']
+        return [datetime.datetime.now() - datetime.timedelta(365 * 10), datetime.datetime.now() - datetime.timedelta(1), 'log']
     return [datetime.date(2009, 1, 3), datetime.datetime.now(), 'log']
 
 @app.callback(Output('tabs-content', 'children'),

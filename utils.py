@@ -27,7 +27,7 @@ def get_extra_datetime_cols(df, datecol, date_format="%Y-%m-%d"):
     df['year'] = [datetime.date(x.year, 1, 1) for x in df['datetime']]
     df['month'] = [datetime.date(x.year, x.month, 1) for x in df['datetime']]
     df['week'] = [(x - datetime.timedelta(days=(x.weekday() + 1))) for x in df['datetime']]
-    df['rhr_week'] = [(x - datetime.timedelta(days=(x.weekday() - 3))) for x in df['datetime']]
+    df['rhr_week'] = [(x - datetime.timedelta(days=((x.weekday() - 3) % 7))) for x in df['datetime']]
     df['day'] = df['date']
     df['halving_era'] = [get_halving_era(x) for x in df['datetime']]
     df['market_cycle'] = [get_market_cycle(x) for x in df['datetime']]

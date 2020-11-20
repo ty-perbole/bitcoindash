@@ -63,8 +63,16 @@ def figures(start_date, end_date, date_granularity, axis_type):
                     See this guide: https://www.bitcoinqna.com/wallets 
                     ''')
                 ]),
-                html.H4(" ")
-            ])
+            ]),
+        ], justify="center"),
+
+        dbc.Row([
+            dbc.Col([
+                html.Details([
+                    html.Summary('📖 Read more about the Security KPIs️ 🤓', style={'fontSize': 26}),
+                    dcc.Markdown('''I wrote a deep dive into these security metrics at Stack Stats. [Click here](https://typerbole.substack.com/p/bitcoin-kpis-security) to learn more about why I chose these metrics and learn about the trends.''')
+                ]),
+            ]),
         ], justify="center"),
 
         dbc.Row([
