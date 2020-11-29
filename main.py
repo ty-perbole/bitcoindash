@@ -14,6 +14,8 @@ app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SLATE]
 app.title = 'Bitcoin KPIs'
 
 app.layout = dbc.Container([
+    dcc.Location(id='url-input', refresh=False),
+    dcc.Location(id='url-output', refresh=False),
     html.H1("Bitcoin KPIs"),
 
     dbc.Container([
@@ -73,46 +75,46 @@ app.layout = dbc.Container([
                 dbc.Tabs([
                     dbc.Tab(
                         label='🔒 Security',
-                        tab_id='security-tab'
+                        tab_id='security'
                     ),
 
                     dbc.Tab(
                         label='📈 Block Space Economics',
-                        tab_id='bsm-tab'
+                        tab_id='blockspace'
                     ),
 
                     dbc.Tab(
                         label='💰 Value & Uptake',
-                        tab_id='value-tab'
+                        tab_id='value'
                     ),
 
                     dbc.Tab(
                         label='😎 Privacy & Fungibility',
-                        tab_id='privacy-tab'
+                        tab_id='privacy'
                     ),
 
                     dbc.Tab(
                         label='⚡ Layer 2',
-                        tab_id='layer2-tab'
+                        tab_id='layer2'
                     ),
 
                     dbc.Tab(
                         label='✏️ Stack Stats️',
-                        tab_id='stack-stats-tab',
+                        tab_id='stack-stats',
                         tab_style={"color": 'rgb(242, 169, 0)'},
                         label_style={"color": 'rgb(242, 169, 0)'}
                     ),
 
                     dbc.Tab(
                         label='🤔 About',
-                        tab_id='about-tab',
+                        tab_id='about',
                         # tab_style={"color": 'rgb(0, 128, 0)'},
                         # label_style={"color": 'rgb(0, 128, 0)'}
                     ),
 
                     dbc.Tab(
                         label='🤲 Donate',
-                        tab_id='donate-tab',
+                        tab_id='donate',
                         # tab_style={"color": 'rgb(242, 169, 0)'},
                         # label_style={"color": 'rgb(242, 169, 0)'}
                     ),
@@ -139,6 +141,14 @@ def set_inputs_on_granularity(date_granularity):
         return [datetime.datetime.now() - datetime.timedelta(365 * 10), datetime.datetime.now() - datetime.timedelta(1), 'log']
     return [datetime.date(2009, 1, 3), datetime.datetime.now(), 'log']
 
+@app.callback(Output('url-output', 'pathname'), Input('tabs', 'active_tab'))
+def update_url_by_tab(value):
+    return f"/{value}"
+
+@app.callback(Output('tabs', 'active_tab'), Input('url-input', 'pathname'))
+def update_tab_by_url(pathname):
+    return pathname[1:]
+
 @app.callback(Output('tabs-content', 'children'),
               [Input('tabs', 'active_tab'),
                Input('date-picker-range', 'start_date'),
@@ -147,17 +157,17 @@ def set_inputs_on_granularity(date_granularity):
                Input('log-linear-picker', 'value')])
 def render_content(tab, start_date, end_date, date_granularity, log_linear):
     gc.collect()
-    if tab == 'value-tab':
+    if tab == 'value':
         return value.figures(start_date, end_date, date_granularity, log_linear)
-    elif tab == 'bsm-tab':
+    elif tab == 'blockspace':
         return blockspace.figures(start_date, end_date, date_granularity, log_linear)
-    elif tab == 'security-tab':
+    elif tab == 'security':
         return security.figures(start_date, end_date, date_granularity, log_linear)
-    elif tab == 'privacy-tab':
+    elif tab == 'privacy':
         return privacy.figures(start_date, end_date, date_granularity, log_linear)
-    elif tab == 'layer2-tab':
+    elif tab == 'layer2':
         return layer2.figures(start_date, end_date, date_granularity, log_linear)
-    elif tab == 'donate-tab':
+    elif tab == 'donate':
         return html.Div([
             dcc.Markdown('''
                 # Donate to Bitcoin development
@@ -171,7 +181,7 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
                 - Use lightning: https://www.bitcoinqna.com/lightning 
                 ''')
         ])
-    elif tab == 'stack-stats-tab':
+    elif tab == 'stack-stats':
         return html.Div([
             dcc.Markdown('''
                 # Stack Stats
@@ -181,7 +191,7 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
                 - Or email me at my twitter handle at pm dot me
                 ''')
         ])
-    elif tab == 'about-tab':
+    elif tab == 'about':
         return dcc.Markdown('''
                 # About
                 The goal of this dashboard is to help the Bitcoin community focus on the important metrics & KPIs that I think are most correlated with the success of the network and ecosystem.
@@ -194,7 +204,7 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
                 I hope you find it useful.
                 ''')
     else:
-        return html.H4(" ")
+        return security.figures(start_date, end_date, date_granularity, log_linear)
 
 if __name__ == '__main__':
     app.run_server(host='0.0.0.0', port=8080)
