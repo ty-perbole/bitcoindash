@@ -138,4 +138,5 @@ dmypy.json
 refresh_data_laptop.sh
 
 ./dash/
+dash/
 test.sh
