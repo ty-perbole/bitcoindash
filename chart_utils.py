@@ -786,12 +786,16 @@ def hodl_waves_chart2(df, **kwargs):
     # Add figure title
     fig.update_layout(
         title_text='RealCap Weighted HODL Waves',
-        # annotations=[
-        #     dict(x=1, y=-0.5,
-        #          text="Data Source: Proprietary",
-        #          showarrow=False, xref='paper', yref='paper',
-        #          xanchor='right', yanchor='auto', xshift=0, yshift=0)
-        # ],
+        annotations=[
+            dict(x=1, y=-0.2,
+                 text="Data: Proprietary",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0),
+            dict(x=1, y=-0.3,
+                 text="Updated weekly Thurs AM",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0)
+        ],
         hovermode='x unified',
         template="plotly_dark",
         legend_orientation="v",
@@ -861,7 +865,11 @@ def whirlpool_stacked_area_chart(df, chart='unspent_capacity', **kwargs):
     fig.update_layout(
         annotations=[
             dict(x=1, y=-0.2,
-                 text="Data: {}".format(kwargs.get('data_source', 'CoinMetrics')),
+                 text="Data: Proprietary",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0),
+            dict(x=1, y=-0.3,
+                 text="Updated weekly Thurs AM",
                  showarrow=False, xref='paper', yref='paper',
                  xanchor='right', yanchor='auto', xshift=0, yshift=0)
         ],
@@ -919,7 +927,11 @@ def wasabi_stacked_area_chart(df, **kwargs):
     fig.update_layout(
         annotations=[
             dict(x=1, y=-0.2,
-                 text="Data: {}".format(kwargs.get('data_source', 'CoinMetrics')),
+                 text="Data: Proprietary",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0),
+            dict(x=1, y=-0.3,
+                 text="Updated weekly Thurs AM",
                  showarrow=False, xref='paper', yref='paper',
                  xanchor='right', yanchor='auto', xshift=0, yshift=0)
         ],

@@ -34,15 +34,44 @@ def figures(start_date, end_date, date_granularity, axis_type):
         # y_series_axis_format="${n},",
         y_series_axis_type=axis_type, data_source='code.samourai.io/whirlpool/whirlpool_stats',
         bars=len(whirlpool_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-        halving_lines=False, marker_color='red')#True if date_granularity not in ['halving_era', 'market_cycle'] else False)
+        halving_lines=False, marker_color='red')
+
+    wasabi_volume_btc = chart_utils.single_axis_chart(
+        unspent_data_clean_filter, x_series='date_period', y_series='wasabi_volume',
+        title='Wasabi Volume', y_series_title='Wasabi Volume (BTC)',
+        # y_series_axis_format="${n},",
+        y_series_axis_type=axis_type, data_source='Proprietary (Updated weekly Thurs AM)',
+        bars=len(unspent_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
+        halving_lines=False,
+        marker_color='green')
+
+    whirlpool_unspent = chart_utils.whirlpool_stacked_area_chart(
+        unspent_data_clean_filter, x_series='date_period', chart='unspent_capacity',
+        title='Whirlpool Unspent Capacity (BTC)', y_series_title='Unspent Capacity (BTC)',
+        y_series_axis_type=axis_type, data_source='Proprietary',
+        bars=len(unspent_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
+        halving_lines=False)
+
+    whirlpool_unspent_count = chart_utils.whirlpool_stacked_area_chart(
+        unspent_data_clean_filter, x_series='date_period', chart='num_outputs',
+        title='Whirlpool Unspent Capacity (Output Count)', y_series_title='Unspent Capacity (Num Outputs)',
+        y_series_axis_type=axis_type, data_source='Proprietary',
+        bars=len(unspent_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
+        halving_lines=False)
+
+    wasabi_unspent = chart_utils.wasabi_stacked_area_chart(
+        unspent_data_clean_filter, x_series='date_period',
+        title='Wasabi Post-Coinjoin UTXO Value', y_series_title='UTXO Value (BTC)',
+        y_series_axis_type=axis_type, data_source='Proprietary',
+        bars=len(unspent_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
+        halving_lines=False)
 
     whirlpool_new_btc = chart_utils.single_axis_chart(
         whirlpool_data_clean_filter, x_series='date_period', y_series='nb_new_tx0s',
         title='Whirlpool New Tx0s', y_series_title='New Tx0s Count',
-        # y_series_axis_format="${n},",
         y_series_axis_type=axis_type, data_source='code.samourai.io/whirlpool/whirlpool_stats',
         bars=len(whirlpool_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-        halving_lines=False, marker_color='red')#True if date_granularity not in ['halving_era', 'market_cycle'] else False)
+        halving_lines=False, marker_color='red')
 
     whirlpool_volume_share = chart_utils.single_axis_chart(
         whirlpool_data_clean_filter, x_series='date_period', y_series=['pool_50M', 'pool_5M', 'pool_1M'],
@@ -50,12 +79,11 @@ def figures(start_date, end_date, date_granularity, axis_type):
         y_series_axis_format=".2%",
         y_series_axis_type=axis_type, data_source='code.samourai.io/whirlpool/whirlpool_stats',
         bars=False,
-        halving_lines=False)#True if date_granularity not in ['halving_era', 'market_cycle'] else False)
+        halving_lines=False)
 
     bisq_vol = chart_utils.single_axis_chart(
         bisq_data_clean_filter, x_series='date_period', y_series='usd_volume',
         title='Bisq BTC Volume ($USD)', y_series_title='$USD Trade Volume on Bisq',
-        # y_series_axis_format="${n},",
         y_series_axis_type=axis_type, data_source='monitor.bisq.network',
         bars=len(bisq_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
@@ -91,13 +119,72 @@ def figures(start_date, end_date, date_granularity, axis_type):
             ], width={"size": 6}),
             dbc.Col([
                 dcc.Graph(
-                    figure=whirlpool_new_btc,
-                    id='whirlpool_new_btc',
+                    figure=wasabi_volume_btc,
+                    id='wasabi_volume_btc',
                     style={'height': CHART_HEIGHT}
                 ),
                 html.Details([
-                    html.Summary('Tell me about Whirlpool New TxOs'),
-                    html.P('''Total value of new TXOs (Tx0s) entering Whirlpool.''')
+                    html.Summary('Tell me about Wasabi Volume'),
+                    html.P('''Total volume mixed by Wasabi. Relies on a proprietary classification model and data may include both false positives and false negatives.''')
+                ])
+            ], width={"size": 6}),
+        ], justify="center"),
+
+        dbc.Row([
+            dbc.Col([html.H4(" ")])
+        ], justify="center"),
+
+        dbc.Row([
+            dbc.Col([
+                dcc.Graph(
+                    figure=whirlpool_unspent,
+                    id='whirlpool_unspent',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about Whirlpool Unspent Capacity'),
+                    html.P('''Unspent BTC amount of Whirlpool-coinjoined transaction outputs. ~100 BTC discrepancy from Clark Moody's dashboard may be due to impact of Tx0s, which are not counted in my unspent capacity calculation.''')
+                ])
+            ], width={"size": 6}),
+            dbc.Col([
+                dcc.Graph(
+                    figure=wasabi_unspent,
+                    id='wasabi_unspent',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about Wasabi Post-Coinjoin Unspent Transaction Outputs'),
+                    html.P('''Total value of all unspent transaction outputs that went through a Wasabi Coinjoin. Broken down between direct outputs of Wasabi transactions, and UTXOs that are 1-hop away from a Wasabi CoinJoin and were spent in a 1-input 1-output transaction. 1-hop outputs are likely Wasabi coinjoined BTC in cold storage.''')
+                ])
+            ], width={"size": 6}),
+        ], justify="center"),
+
+        dbc.Row([
+            dbc.Col([html.H4(" ")])
+        ], justify="center"),
+
+        dbc.Row([
+            dbc.Col([
+                dcc.Graph(
+                    figure=whirlpool_unspent_count,
+                    id='whirlpool_unspent_count',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about Whirlpool Unspent Capacity (Outputs)'),
+                    html.P(
+                        '''Number of unspent outputs from Whirlpool-coinjoined transactions.''')
+                ])
+            ], width={"size": 6}),
+            dbc.Col([
+                dcc.Graph(
+                    figure=bisq_vol,
+                    id='bisq_vol',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about Bisq BTC Volume'),
+                    html.P('''BTC transactoin volume on P2P exchange Bisq, denominated in $USD.''')
                 ])
             ], width={"size": 6}),
         ], justify="center"),
@@ -120,13 +207,13 @@ def figures(start_date, end_date, date_granularity, axis_type):
             ], width={"size": 6}),
             dbc.Col([
                 dcc.Graph(
-                    figure=bisq_vol,
-                    id='bisq_vol',
+                    figure=whirlpool_new_btc,
+                    id='whirlpool_new_btc',
                     style={'height': CHART_HEIGHT}
                 ),
                 html.Details([
-                    html.Summary('Tell me about Bisq BTC Volume'),
-                    html.P('''BTC transactoin volume on P2P exchange Bisq, denominated in $USD.''')
+                    html.Summary('Tell me about Whirlpool New TxOs'),
+                    html.P('''Total number of new TXOs (Tx0s) entering Whirlpool across all pools.''')
                 ])
             ], width={"size": 6}),
         ], justify="center")
