@@ -44,7 +44,7 @@ try:
         wp['pool'] = float('.'+pool_size) * 10
         dfs.append(wp.copy())
     wp = pd.concat(dfs, ignore_index=True)
-    wp['nb_new_btc'] = wp['nb_new_tx0s'] * wp['pool']
+    wp['nb_new_btc'] = wp['nb_new_tx0s']
     wp['nb_active_btc'] = wp['nb_active_tx0s'] * wp['pool']
     wp['volume'] = wp['nb_mixes'] * wp['pool'] * 5
 
@@ -54,16 +54,16 @@ try:
     dfs = {}
 
     for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
-        out = wp.groupby(by=[date_granularity], as_index=False)['nb_new_btc', 'nb_active_btc', 'volume'].sum()
+        out = wp.groupby(by=[date_granularity], as_index=False)['nb_new_tx0s', 'nb_active_btc', 'volume'].sum()
         pools = wp.groupby(by=[date_granularity, 'pool'], as_index=False)['volume'].sum().pivot(index=date_granularity, columns='pool', values='volume')
         out = out.merge(pools, on=date_granularity)
-        out['pool_50M'] = out[0.5]  / out['volume']
-        out['pool_5M'] = out[0.05]  / out['volume']
-        out['pool_1M'] = out[0.01]  / out['volume']
+        out['pool_50M'] = out[0.5] / out['volume']
+        out['pool_5M'] = out[0.05] / out['volume']
+        out['pool_1M'] = out[0.01] / out['volume']
         out['date_period'] = out[date_granularity]
         out['date_granularity'] = date_granularity
         dfs[date_granularity] = out[
-            ['date_granularity', 'date_period', 'nb_new_btc', 'nb_active_btc', 'volume',
+            ['date_granularity', 'date_period', 'nb_new_tx0s', 'nb_active_btc', 'volume',
              'pool_50M', 'pool_5M', 'pool_1M']
         ].copy()
 

@@ -30,8 +30,8 @@ def figures(start_date, end_date, date_granularity, axis_type):
         halving_lines=False)#True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
     whirlpool_new_btc = chart_utils.single_axis_chart(
-        whirlpool_data_clean_filter, x_series='date_period', y_series='nb_new_btc',
-        title='Whirlpool New Tx0s', y_series_title='New Tx0s (Total BTC)',
+        whirlpool_data_clean_filter, x_series='date_period', y_series='nb_new_tx0s',
+        title='Whirlpool New Tx0s', y_series_title='New Tx0s Count',
         # y_series_axis_format="${n},",
         y_series_axis_type=axis_type, data_source='code.samourai.io/whirlpool/whirlpool_stats',
         bars=len(whirlpool_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
@@ -46,8 +46,8 @@ def figures(start_date, end_date, date_granularity, axis_type):
         halving_lines=False)#True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
     bisq_vol = chart_utils.single_axis_chart(
-        bisq_data_clean_filter, x_series='date_period', y_series='volume',
-        title='Bisq BTC Volume', y_series_title='Trade Volume on Bisq',
+        bisq_data_clean_filter, x_series='date_period', y_series='usd_volume',
+        title='Bisq BTC Volume ($USD)', y_series_title='$USD Trade Volume on Bisq',
         # y_series_axis_format="${n},",
         y_series_axis_type=axis_type, data_source='monitor.bisq.network',
         bars=len(bisq_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
@@ -119,7 +119,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
                 ),
                 html.Details([
                     html.Summary('Tell me about Bisq BTC Volume'),
-                    html.P('''BTC transactoin volume on P2P exchange Bisq.''')
+                    html.P('''BTC transactoin volume on P2P exchange Bisq, denominated in $USD''')
                 ])
             ], width={"size": 6}),
         ], justify="center")
