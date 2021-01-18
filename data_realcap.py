@@ -1,7 +1,12 @@
 import subprocess
 import pandas as pd
 import utils
+import os
 
+try:
+    os.remove("btc.csv")
+except FileNotFoundError:
+    pass
 subprocess.run("wget https://coinmetrics.io/newdata/btc.csv", shell=True, check=True)
 subprocess.run("bq load --autodetect dash.cm_btc btc.csv", shell=True, check=True)
 subprocess.run("mv realcap.csv realcap_old.csv", shell=True, check=True)

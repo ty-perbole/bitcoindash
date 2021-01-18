@@ -86,7 +86,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
         title='Bisq BTC Volume ($USD)', y_series_title='$USD Trade Volume on Bisq',
         y_series_axis_type=axis_type, data_source='monitor.bisq.network',
         bars=len(bisq_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-        halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
+        halving_lines=False)
 
     children = [
         dbc.Row([

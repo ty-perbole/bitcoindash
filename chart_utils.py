@@ -46,7 +46,9 @@ def single_axis_chart(df, x_series, y_series, **kwargs):
         showlegend=False,
         legend_orientation="h",
         template="plotly_dark",
-        hovermode='x unified'
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set y-axes titles
@@ -189,7 +191,9 @@ def two_axis_chart(df, x_series, y1_series, y2_series, **kwargs):
         showlegend=True,
         legend_orientation="h",
         template="plotly_dark",
-        hovermode='x unified'
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set y-axes titles
@@ -413,6 +417,8 @@ def hodl_waves_chart(df, version='value', **kwargs):
         template="plotly_dark",
         legend_orientation="v",
         showlegend=False,
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     return fig
@@ -604,6 +610,8 @@ def hodl_waves_chart2(df, **kwargs):
         template="plotly_dark",
         legend_orientation="v",
         showlegend=False,
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     return fig
@@ -800,6 +808,8 @@ def hodl_waves_chart2(df, **kwargs):
         template="plotly_dark",
         legend_orientation="v",
         showlegend=False,
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set x-axis title
@@ -876,7 +886,9 @@ def whirlpool_stacked_area_chart(df, chart='unspent_capacity', **kwargs):
         showlegend=True,
         legend_orientation="h",
         template="plotly_dark",
-        hovermode='x unified'
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set y-axes titles
@@ -891,9 +903,20 @@ def whirlpool_stacked_area_chart(df, chart='unspent_capacity', **kwargs):
 
 def wasabi_stacked_area_chart(df, **kwargs):
     x = df[kwargs.get('x_series', 'date_period')]
+    total = df['unspent_capacity_0hop_wasabi'] + df['unspent_capacity_1hop_wasabi']
     fig = make_subplots(
         specs=[[{"secondary_y": False}]]
     )
+
+    fig.add_trace(go.Scatter(
+        x=x, y=total,
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='lightblue',
+        name='Total',
+        stackgroup='two'
+    ))
 
     fig.add_trace(go.Scatter(
         x=x, y=df['unspent_capacity_0hop_wasabi'],
@@ -938,7 +961,9 @@ def wasabi_stacked_area_chart(df, **kwargs):
         showlegend=True,
         legend_orientation="h",
         template="plotly_dark",
-        hovermode='x unified'
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set y-axes titles
