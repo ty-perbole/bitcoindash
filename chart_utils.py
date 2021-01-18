@@ -9,14 +9,14 @@ def single_axis_chart(df, x_series, y_series, **kwargs):
 
     if kwargs.get('bars', False):
         fig.add_bar(
-            x=df[x_series], y=df[y_series], name=y_series, marker_color='rgb(242, 169, 0)',
+            x=df[x_series], y=df[y_series], name=y_series, marker_color=kwargs.get('marker_color', 'rgb(242, 169, 0)'),
             text=["{:.2%} Δ".format(x) if np.isfinite(x) else '' for x in df[y_series].pct_change()],
             textposition='auto',
         )
     else:
         if isinstance(y_series, str):
             fig.add_trace(
-                go.Scatter(x=df[x_series], y=df[y_series], name=y_series, marker_color='rgb(242, 169, 0)'),
+                go.Scatter(x=df[x_series], y=df[y_series], name=y_series, marker_color=kwargs.get('marker_color', 'rgb(242, 169, 0)')),
                 secondary_y=False
             )
         elif isinstance(y_series, list):
@@ -46,7 +46,9 @@ def single_axis_chart(df, x_series, y_series, **kwargs):
         showlegend=False,
         legend_orientation="h",
         template="plotly_dark",
-        hovermode='x unified'
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set y-axes titles
@@ -189,7 +191,9 @@ def two_axis_chart(df, x_series, y1_series, y2_series, **kwargs):
         showlegend=True,
         legend_orientation="h",
         template="plotly_dark",
-        hovermode='x unified'
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set y-axes titles
@@ -413,6 +417,8 @@ def hodl_waves_chart(df, version='value', **kwargs):
         template="plotly_dark",
         legend_orientation="v",
         showlegend=False,
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     return fig
@@ -604,6 +610,8 @@ def hodl_waves_chart2(df, **kwargs):
         template="plotly_dark",
         legend_orientation="v",
         showlegend=False,
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     return fig
@@ -786,19 +794,184 @@ def hodl_waves_chart2(df, **kwargs):
     # Add figure title
     fig.update_layout(
         title_text='RealCap Weighted HODL Waves',
-        # annotations=[
-        #     dict(x=1, y=-0.5,
-        #          text="Data Source: Proprietary",
-        #          showarrow=False, xref='paper', yref='paper',
-        #          xanchor='right', yanchor='auto', xshift=0, yshift=0)
-        # ],
+        annotations=[
+            dict(x=1, y=-0.2,
+                 text="Data: Proprietary",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0),
+            dict(x=1, y=-0.3,
+                 text="Updated weekly Thurs AM",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0)
+        ],
         hovermode='x unified',
         template="plotly_dark",
         legend_orientation="v",
         showlegend=False,
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
     )
 
     # Set x-axis title
     fig.update_xaxes(title_text='Date')
+
+    return fig
+
+def whirlpool_stacked_area_chart(df, chart='unspent_capacity', **kwargs):
+    x = df[kwargs.get('x_series', 'date_period')]
+    fig = make_subplots(
+        specs=[[{"secondary_y": False}]]
+    )
+
+    fig.add_trace(go.Scatter(
+        x=x, y=df['{}_0hop_samourai'.format(chart)],
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='lightblue',
+        name='Total',
+        stackgroup='two'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=df['{}_0hop_samourai_5'.format(chart)],
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='red',
+        name='50M Sats Pool',
+        stackgroup='one'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=df['{}_0hop_samourai_05'.format(chart)],
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='darkred',
+        name='5M Sats Pool',
+        stackgroup='one'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=df['{}_0hop_samourai_01'.format(chart)],
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='indianred',
+        name='1M Sats Pool',
+        stackgroup='one'
+    ))
+
+    # Add figure title
+    fig.update_layout(
+        title_text=kwargs.get('title', ''),
+    )
+
+    # Set x-axis title
+    if kwargs.get('x_axis_title'):
+        fig.update_xaxes(title_text=kwargs.get('x_axis_title'))
+
+    fig.update_layout(
+        annotations=[
+            dict(x=1, y=-0.2,
+                 text="Data: Proprietary",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0),
+            dict(x=1, y=-0.3,
+                 text="Updated weekly Thurs AM",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0)
+        ],
+        showlegend=True,
+        legend_orientation="h",
+        template="plotly_dark",
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
+    )
+
+    # Set y-axes titles
+    fig.update_yaxes(
+        title_text=kwargs.get('y_series_title', ''), secondary_y=False,
+        tickformat=kwargs.get('y_series_axis_format', None),
+        type=kwargs.get('y_series_axis_type', 'linear'), range=kwargs.get('y_series_axis_range'),
+        showgrid=False
+    )
+
+    return fig
+
+def wasabi_stacked_area_chart(df, **kwargs):
+    x = df[kwargs.get('x_series', 'date_period')]
+    total = df['unspent_capacity_0hop_wasabi'] + df['unspent_capacity_1hop_wasabi']
+    fig = make_subplots(
+        specs=[[{"secondary_y": False}]]
+    )
+
+    fig.add_trace(go.Scatter(
+        x=x, y=total,
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='lightblue',
+        name='Total',
+        stackgroup='two'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=df['unspent_capacity_0hop_wasabi'],
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='lightgreen',
+        name='Coinjoin Transaction Outputs',
+        stackgroup='one'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=df['unspent_capacity_1hop_wasabi'],
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='green',
+        name='1-Hop from Coinjoin Transaction Outputs',
+        stackgroup='one'
+    ))
+
+    # Add figure title
+    fig.update_layout(
+        title_text=kwargs.get('title', ''),
+    )
+
+    # Set x-axis title
+    if kwargs.get('x_axis_title'):
+        fig.update_xaxes(title_text=kwargs.get('x_axis_title'))
+
+    fig.update_layout(
+        annotations=[
+            dict(x=1, y=-0.2,
+                 text="Data: Proprietary",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0),
+            dict(x=1, y=-0.3,
+                 text="Updated weekly Thurs AM",
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0)
+        ],
+        showlegend=True,
+        legend_orientation="h",
+        template="plotly_dark",
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
+    )
+
+    # Set y-axes titles
+    fig.update_yaxes(
+        title_text=kwargs.get('y_series_title', ''), secondary_y=False,
+        tickformat=kwargs.get('y_series_axis_format', None),
+        type=kwargs.get('y_series_axis_type', 'linear'), range=kwargs.get('y_series_axis_range'),
+        showgrid=False
+    )
 
     return fig
