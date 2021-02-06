@@ -901,9 +901,9 @@ def whirlpool_stacked_area_chart(df, chart='unspent_capacity', **kwargs):
 
     return fig
 
-def wasabi_stacked_area_chart(df, **kwargs):
+def wasabi_jm_stacked_area_chart(df, cj_type='wasabi', **kwargs):
     x = df[kwargs.get('x_series', 'date_period')]
-    total = df['unspent_capacity_0hop_wasabi'] + df['unspent_capacity_1hop_wasabi']
+    total = df['unspent_capacity_0hop_{}'.format(cj_type)] + df['unspent_capacity_1hop_{}'.format(cj_type)]
     fig = make_subplots(
         specs=[[{"secondary_y": False}]]
     )
@@ -919,21 +919,21 @@ def wasabi_stacked_area_chart(df, **kwargs):
     ))
 
     fig.add_trace(go.Scatter(
-        x=x, y=df['unspent_capacity_0hop_wasabi'],
+        x=x, y=df['unspent_capacity_0hop_{}'.format(cj_type)],
         mode='lines',
         line=dict(width=0.5, color='rgb(0, 0, 0)'),
         fill='tonexty',
-        fillcolor='lightgreen',
+        fillcolor=('orangered' if cj_type == 'jm' else 'lightgreen'),
         name='Coinjoin Transaction Outputs',
         stackgroup='one'
     ))
 
     fig.add_trace(go.Scatter(
-        x=x, y=df['unspent_capacity_1hop_wasabi'],
+        x=x, y=df['unspent_capacity_1hop_{}'.format(cj_type)],
         mode='lines',
         line=dict(width=0.5, color='rgb(0, 0, 0)'),
         fill='tonexty',
-        fillcolor='green',
+        fillcolor=('orange' if cj_type == 'jm' else 'green'),
         name='1-Hop from Coinjoin Transaction Outputs',
         stackgroup='one'
     ))

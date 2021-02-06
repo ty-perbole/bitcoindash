@@ -89,6 +89,8 @@ blocks AS (
     cm
   ON
     cm.date = DATE(blocks.timestamp)
+  WHERE
+    DATE(blocks.timestamp) >= '2021-01-01'
   GROUP BY
     date, price_usd)
 
