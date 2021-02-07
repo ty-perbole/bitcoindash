@@ -12,7 +12,14 @@ subprocess.run("bq load --autodetect dash.cm_btc btc.csv", shell=True, check=Tru
 subprocess.run("mv realcap.csv realcap_old.csv", shell=True, check=True)
 subprocess.run("bq query --use_legacy_sql=False --format=csv --max_rows=999999 < ./queries/realcap.sql > realcap.csv", shell=True, check=True)
 
-waves = pd.read_csv("realcap.csv")
+# waves = pd.read_csv("realcap.csv")
+
+waves = pd.read_csv("../stack-stats/data/03_hodl_waves_real_cap.csv")
+
+waves_new = pd.read_csv("realcap.csv")
+
+waves = waves[:-1].append(waves_new).reset_index(drop=True)
+
 waves_buckets = list([x for x in waves.columns.values if 'utxo_realcap' in x])
 waves = utils.get_extra_datetime_cols(waves, 'date')
 
@@ -31,3 +38,4 @@ for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_er
 clean_data = pd.concat(dfs, ignore_index=True)
 clean_data.dropna(inplace=True)
 clean_data.to_csv('./data/waves_data_clean2.csv', index=False)
+
