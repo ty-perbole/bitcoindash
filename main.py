@@ -7,7 +7,7 @@ import datetime
 from flask import Flask, Response
 import gc
 
-import value, blockspace, security, privacy, layer2
+import value, blockspace, security, privacy, layer2, cycles
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SLATE], eager_loading=True)
@@ -99,6 +99,11 @@ app.layout = dbc.Container([
                     ),
 
                     dbc.Tab(
+                        label='🔄 Cycles Comparison',
+                        tab_id='cycles'
+                    ),
+
+                    dbc.Tab(
                         label='✏️ Stack Stats️',
                         tab_id='stack-stats',
                         tab_style={"color": 'rgb(242, 169, 0)'},
@@ -167,6 +172,8 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
         return privacy.figures(start_date, end_date, date_granularity, log_linear)
     elif tab == 'layer2':
         return layer2.figures(start_date, end_date, date_granularity, log_linear)
+    elif tab == 'cycles':
+        return cycles.figures()
     elif tab == 'donate':
         return html.Div([
             dcc.Markdown('''
