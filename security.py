@@ -60,7 +60,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
                     The best way to improve Bitcoin's security as an individual is to run your own Bitcoin node. See this guide to learn more: [node.guide](http://node.guide/)
 
                     ### Hold your own private keys!
-                    See this guide: https://www.bitcoinqna.com/wallets 
+                    See this guide: https://bitcoiner.guide/qna/wallets/
                     ''')
                 ]),
             ]),

@@ -863,6 +863,16 @@ def whirlpool_stacked_area_chart(df, chart='unspent_capacity', **kwargs):
         stackgroup='one'
     ))
 
+    fig.add_trace(go.Scatter(
+        x=x, y=df['{}_0hop_samourai_001'.format(chart)],
+        mode='lines',
+        line=dict(width=0.5, color='rgb(0, 0, 0)'),
+        fill='tonexty',
+        fillcolor='pink',
+        name='100k Sats Pool',
+        stackgroup='one'
+    ))
+
     # Add figure title
     fig.update_layout(
         title_text=kwargs.get('title', ''),

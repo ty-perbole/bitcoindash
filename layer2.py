@@ -69,7 +69,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
                     html.Summary('⚡️ How to grow L2 ⚡️', style={'fontSize': 26}),
                     dcc.Markdown('''
                             ### Run a Bitcoin Node!
-                            Run a Bitcoin node, specifically one that has lightning support, open some lightning channels and use lightning. See these guides to learn more: [node.guide](http://node.guide/), https://www.bitcoinqna.com/lightning
+                            Run a Bitcoin node, specifically one that has lightning support, open some lightning channels and use lightning. See these guides to learn more: [node.guide](http://node.guide/), http://bitcoiner.guide/lightning
                             ''')
                 ]),
                 html.H4(" ")
