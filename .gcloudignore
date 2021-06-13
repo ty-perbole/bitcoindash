@@ -25,9 +25,13 @@ __pycache__/
 README.md
 
 ./*.csv
+./data/mempool_historical_raw.csv
+./data/jm/*
 
 /dash/
 /dash-gcp/
+/queries/
+/whirlpool_stats/
 
 *.dump
 

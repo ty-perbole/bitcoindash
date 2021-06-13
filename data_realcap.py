@@ -7,12 +7,17 @@ try:
     os.remove("btc.csv")
 except FileNotFoundError:
     pass
+
+# ! wget https://coinmetrics.io/newdata/btc.csv
+# ! bq load --autodetect --replace dash.cm_btc btc.csv
+# ! mv realcap.csv realcap_old.csv
+# ! bq query --use_legacy_sql=False --format=csv --max_rows=999999 < ./queries/realcap.sql > realcap.csv
 subprocess.run("wget https://coinmetrics.io/newdata/btc.csv", shell=True, check=True)
 subprocess.run("bq load --autodetect --replace dash.cm_btc btc.csv", shell=True, check=True)
 subprocess.run("mv realcap.csv realcap_old.csv", shell=True, check=True)
 subprocess.run("bq query --use_legacy_sql=False --format=csv --max_rows=999999 < ./queries/realcap.sql > realcap.csv", shell=True, check=True)
 
-# waves = pd.read_csv("realcap.csv")
+waves = pd.read_csv("realcap.csv")
 
 waves = pd.read_csv("../stack-stats/data/03_hodl_waves_real_cap.csv")
 

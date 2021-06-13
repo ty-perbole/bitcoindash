@@ -14,11 +14,13 @@ try:
 
     cm = utils.get_extra_datetime_cols(cm, 'date')
 
+    cm['BlkSizeByte'] = cm['BlkCnt'] * cm['BlkSizeMeanByte']
+
     dfs = {}
     median_metrics = ['CapMrktCurUSD', 'CapRealUSD', 'CapMVRVCur', 'HashRate', 'VtyDayRet30d', 'AdrActCnt']
     sum_metrics = [
-        'TxTfrValAdjUSD', 'IssTotUSD', 'FeeTotUSD', 'FeeTotNtv', 'BlkSizeByte',
-        'SplyCur', 'IssTotNtv', 'TxTfrValNtv', 'TxTfrValUSD', 'HashRate'
+        'TxTfrValAdjUSD', 'IssTotUSD', 'FeeTotUSD', 'FeeTotNtv', 'BlkWghtTot', 'BlkSizeByte',
+        'SplyCur', 'IssTotNtv', 'TxTfrValAdjNtv', 'HashRate'
     ]
 
     for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
@@ -29,7 +31,7 @@ try:
         sums['SecuritySpendRatio'] = (sums['IssTotNtv'] + sums['FeeTotNtv']) / sums['SplyCur']
         sums['BlockSpacePrice'] = sums['FeeTotNtv'] * 10 ** 8 / sums['BlkSizeByte']
         sums['BlockSpacePriceUSD'] = sums['FeeTotUSD'] * 100 / sums['BlkSizeByte']
-        sums['TransactionDensity'] = sums['TxTfrValUSD'] / sums['BlkSizeByte']
+        sums['TransactionDensity'] = sums['TxTfrValAdjUSD'] / sums['BlkSizeByte']
         sums['CentsPerEH'] = (sums['SecuritySpend'] / (sums['HashRate'] * 60 * 60 * 24)) * 100
         sums['DollarsPerYH'] = (sums['SecuritySpend'] / (sums['HashRate'] * 60 * 60 * 24 * (10 ** -6)))
         sums['HashRate'] = sums['HashRate'] / 1000000
