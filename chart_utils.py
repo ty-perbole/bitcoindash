@@ -19,6 +19,40 @@ def single_axis_chart(df, x_series, y_series, **kwargs):
                 go.Scatter(x=df[x_series], y=df[y_series], name=y_series, marker_color=kwargs.get('marker_color', 'rgb(242, 169, 0)')),
                 secondary_y=False
             )
+            if kwargs.get('confidence_interals', False):
+                fig.add_trace(
+                    go.Scatter(
+                        x=df[x_series],
+                        y=df[kwargs.get('confidence_interals', False)[2]],
+                        line=dict(color='lightblue'),
+                        mode='lines',
+                        name='7 Day Moving Average'
+                    )
+                ),
+                fig.add_trace(
+                    go.Scatter(
+                        name='Upper Bound',
+                        x=df[x_series],
+                        y=df[kwargs.get('confidence_interals', False)[1]],
+                        mode='lines',
+                        marker=dict(color="#444"),
+                        line=dict(width=0),
+                        showlegend=False
+                    )
+                ),
+                fig.add_trace(
+                        go.Scatter(
+                        name='Lower Bound',
+                        x=df[x_series],
+                        y=df[kwargs.get('confidence_interals', False)[0]],
+                        marker=dict(color="#444"),
+                        line=dict(width=0),
+                        mode='lines',
+                        fillcolor='rgba(190, 190, 190, 0.3)',
+                        fill='tonexty',
+                        showlegend=False
+                    )
+                )
         elif isinstance(y_series, list):
             for y1 in y_series:
                 # First trace

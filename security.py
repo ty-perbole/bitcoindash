@@ -26,8 +26,9 @@ def figures(start_date, end_date, date_granularity, axis_type):
         cm_data_clean_filter, x_series='date_period', y_series='HashRate',
         title='Hash Rate', y_series_title='Hash Rate (EH/s)',
         y_series_axis_type=axis_type,
-        bars=len(cm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-        halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
+        bars=len(cm_data_clean_filter) <= 90 and date_granularity != 'day',
+        halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False,
+        confidence_interals=['HashRateLower', 'HashRateUpper', 'HashRateL7D'] if date_granularity == 'day' else False)
 
     node_count = chart_utils.single_axis_chart(
         nc_data_clean_filter, x_series='date_period', y_series='total_nodes',
@@ -85,7 +86,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
                 html.Details([
                     html.Summary('Tell me about Hash Rate'),
                     html.P('''
-                    Hash Rate is measured in EH/s. From CoinMetrics: "The mean rate at which miners are solving hashes that day. Hash rate is the speed at which computations are being completed across all miners in the network."''')
+                    Hash Rate is measured in EH/s. From CoinMetrics: "The mean rate at which miners are solving hashes that day. Hash rate is the speed at which computations are being completed across all miners in the network." 95% Poisson confidence bands on the daily chart are shown to demonstrate the uncertainty in the daily measurement of Hash Rate.''')
                 ])
             ], width={"size": 6}),
             dbc.Col([

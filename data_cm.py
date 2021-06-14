@@ -1,6 +1,7 @@
 import os
 import subprocess
 import pandas as pd
+from scipy.stats import poisson
 
 import utils
 try:
@@ -16,8 +17,21 @@ try:
 
     cm['BlkSizeByte'] = cm['BlkCnt'] * cm['BlkSizeMeanByte']
 
+
+    cm['HashRateL7DInc'] = cm['HashRate'].rolling(7).mean()
+    cm['HashRateL7D'] = cm['HashRateL7DInc'].shift() / 1000000
+
+    alpha = 0.025
+    cm['BlkCntLower'] = [poisson.interval(1 - alpha, x)[0] for x in cm['BlkCnt']]
+    cm['BlkCntUpper'] = [poisson.interval(1 - alpha, x)[1] for x in cm['BlkCnt']]
+    cm['HashRateLower'] = [(x / 144) * y * (((2 ** 32) / (10 ** 12)) / (600 * 1000000))
+                             for x, y in zip(cm['BlkCntLower'], cm['DiffMean'])]
+    cm['HashRateUpper'] = [(x / 144) * y * (((2 ** 32) / (10 ** 12)) / (600 * 1000000))
+                             for x, y in zip(cm['BlkCntUpper'], cm['DiffMean'])]
+
     dfs = {}
-    median_metrics = ['CapMrktCurUSD', 'CapRealUSD', 'CapMVRVCur', 'HashRate', 'VtyDayRet30d', 'AdrActCnt']
+    median_metrics = ['CapMrktCurUSD', 'CapRealUSD', 'CapMVRVCur', 'HashRate', 'VtyDayRet30d', 'AdrActCnt',
+                      'HashRateLower', 'HashRateUpper', 'HashRateL7D']
     sum_metrics = [
         'TxTfrValAdjUSD', 'IssTotUSD', 'FeeTotUSD', 'FeeTotNtv', 'BlkWghtTot', 'BlkSizeByte',
         'SplyCur', 'IssTotNtv', 'TxTfrValAdjNtv', 'HashRate'
