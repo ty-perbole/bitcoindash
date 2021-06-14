@@ -5,6 +5,7 @@ import utils
 try:
 
     lnchan = pd.read_csv("ln_channels.csv")
+    lnpol = pd.read_csv("./data/ln_policies.csv")
     lnchan['open_ts'] = pd.to_datetime(lnchan['open_ts'] * 1000000000)
     lnchan['close_ts'] = pd.to_datetime(lnchan['close_ts'] * 1000000000)
 
@@ -33,18 +34,22 @@ try:
 
     lnmetrics = pd.DataFrame.from_dict(out_df, orient='index')
     lnmetrics['date'] = lnmetrics.index
+    lnpol['date'] = lnpol['day']
+    lnmetrics = lnmetrics.merge(lnpol, on='date', how='inner')
     lnmetrics = utils.get_extra_datetime_cols(lnmetrics, 'date')
 
     dfs = {}
 
     for date_granularity in ['day', 'week', 'rhr_week', 'month', 'year', 'halving_era', 'market_cycle']:
         out = lnmetrics.groupby(by=[date_granularity], as_index=False)[
-            'channel_count', 'channel_value', 'nodes_w_channels', 'node_liquidity_herfindahl'].median()
+            'channel_count', 'channel_value', 'nodes_w_channels', 'node_liquidity_herfindahl',
+            'sat_weighted_mean_base_fee_millisatoshi', 'sat_weighted_mean_fee_per_millionth'].median()
         out['date_period'] = out[date_granularity]
         out['date_granularity'] = date_granularity
         dfs[date_granularity] = out[
             ['date_granularity', 'date_period', 'channel_count', 'channel_value', 'nodes_w_channels',
-             'node_liquidity_herfindahl']
+             'node_liquidity_herfindahl', 'sat_weighted_mean_base_fee_millisatoshi',
+             'sat_weighted_mean_fee_per_millionth']
         ].copy()
 
     clean_data = pd.concat(dfs, ignore_index=True)

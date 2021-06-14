@@ -46,21 +46,21 @@ def figures(start_date, end_date, date_granularity, axis_type):
         bars=len(ln_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
-    # base_fee_millisatoshi = chart_utils.single_axis_chart(
-    #     ln_data_clean_filter, x_series='date_period', y_series='sat_weighted_mean_base_fee_millisatoshi',
-    #     title='Mean Base Fee (weighted by channel size)', y_series_title='Base Fee (millisat)',
-    #     # y_series_axis_format="${n},",
-    #     y_series_axis_type=axis_type, data_source='ln.bigsun.xyz',
-    #     bars=len(ln_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-    #     halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
-    #
-    # fee_per_millionth = chart_utils.single_axis_chart(
-    #     ln_data_clean_filter, x_series='date_period', y_series='sat_weighted_mean_fee_per_millionth',
-    #     title='Mean Proportional Fee (weighted by channel size)', y_series_title='Millisat per million satoshis',
-    #     # y_series_axis_format="${n},",
-    #     y_series_axis_type=axis_type, data_source='ln.bigsun.xyz',
-    #     bars=len(ln_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-    #     halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
+    base_fee_millisatoshi = chart_utils.single_axis_chart(
+        ln_data_clean_filter, x_series='date_period', y_series='sat_weighted_mean_base_fee_millisatoshi',
+        title='Mean Base Fee (weighted by channel size)', y_series_title='Base Fee (millisat)',
+        # y_series_axis_format="${n},",
+        y_series_axis_type=axis_type, data_source='ln.bigsun.xyz',
+        bars=len(ln_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
+        halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
+
+    fee_per_millionth = chart_utils.single_axis_chart(
+        ln_data_clean_filter, x_series='date_period', y_series='sat_weighted_mean_fee_per_millionth',
+        title='Mean Proportional Fee (weighted by channel size)', y_series_title='Sats per million satoshis',
+        # y_series_axis_format="${n},",
+        y_series_axis_type=axis_type, data_source='ln.bigsun.xyz',
+        bars=len(ln_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
+        halving_lines=True if date_granularity not in ['halving_era', 'market_cycle'] else False)
 
     children = [
         dbc.Row([
@@ -69,7 +69,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
                     html.Summary('⚡️ How to grow L2 ⚡️', style={'fontSize': 26}),
                     dcc.Markdown('''
                             ### Run a Bitcoin Node!
-                            Run a Bitcoin node, specifically one that has lightning support, open some lightning channels and use lightning. See these guides to learn more: [node.guide](http://node.guide/), https://www.bitcoinqna.com/lightning
+                            Run a Bitcoin node, specifically one that has lightning support, open some lightning channels and use lightning. See these guides to learn more: [node.guide](http://node.guide/), http://bitcoiner.guide/lightning
                             ''')
                 ]),
                 html.H4(" ")
@@ -134,32 +134,32 @@ def figures(start_date, end_date, date_granularity, axis_type):
             dbc.Col([html.H4(" ")])
         ], justify="center"),
 
-        # dbc.Row([
-        #     dbc.Col([
-        #         dcc.Graph(
-        #             figure=base_fee_millisatoshi,
-        #             id='base_fee_millisatoshi',
-        #             style={'height': CHART_HEIGHT}
-        #         ),
-        #         html.Details([
-        #             html.Summary('Tell me about base fee'),
-        #             html.P(
-        #                 '''The mean base fee per public lightning channel. "The default is 1000 millisat, which means 1 satoshi fee per every routed payment." (See https://openoms.gitbook.io/lightning-node-management/). Mean is weighted by channel size.''')
-        #         ])
-        #     ], width={"size": 6}),
-        #     dbc.Col([
-        #         dcc.Graph(
-        #             figure=fee_per_millionth,
-        #             id='fee_per_millionth',
-        #             style={'height': CHART_HEIGHT}
-        #         ),
-        #         html.Details([
-        #             html.Summary('Tell me about proportional fee'),
-        #             html.P(
-        #                 '''The mean proportional fee per public lightning channel. "proportional fee (fee_rate) which is by default in lnd: 0.000001. This means there is an additional 1 sat charged for every million satoshis in the routed payment." (See https://openoms.gitbook.io/lightning-node-management/). Mean is weighted by channel size.''')
-        #         ])
-        #     ], width={"size": 6}),
-        # ], justify="center")
+        dbc.Row([
+            dbc.Col([
+                dcc.Graph(
+                    figure=base_fee_millisatoshi,
+                    id='base_fee_millisatoshi',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about base fee'),
+                    html.P(
+                        '''The mean base fee per public lightning channel. "The default is 1000 millisat, which means 1 satoshi fee per every routed payment." (See https://openoms.gitbook.io/lightning-node-management/). Mean is weighted by channel size.''')
+                ])
+            ], width={"size": 6}),
+            dbc.Col([
+                dcc.Graph(
+                    figure=fee_per_millionth,
+                    id='fee_per_millionth',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about proportional fee'),
+                    html.P(
+                        '''The mean proportional fee per public lightning channel. "proportional fee (fee_rate) which is by default in lnd: 0.000001. This means there is an additional 1 sat charged for every million satoshis in the routed payment." (See https://openoms.gitbook.io/lightning-node-management/). Mean is weighted by channel size.''')
+                ])
+            ], width={"size": 6}),
+        ], justify="center")
     ]
 
     return children
