@@ -116,7 +116,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
         unspent_data_clean_filter, x_series='date_period', y_series=['WrappedSegwit', 'NativeSegwit'],
         title='JoinMarket Volume by OrderBook', y_series_title='JoinMarket Volume Share',
         y_series_axis_format=".2%",
-        y_series_axis_type=axis_type, data_source='Proprietary',
+        y_series_axis_type=axis_type, data_source='Proprietary (Updated weekly Thurs AM)',
         bars=False,
         halving_lines=False)
 
@@ -139,7 +139,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
     jm_cj_fee = chart_utils.single_axis_chart(
         jm_data_clean_filter, x_series='date_period', y_series='cj_fee',
         title='JoinMarket Maker Median Fee Rate', y_series_title='Median Fee Rate',
-        # y_series_axis_format="{n}%",
+        y_series_axis_format=',.4%',
         y_series_axis_type=axis_type, data_source='https://nixbitcoin.org/obwatcher',
         bars=len(jm_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=False)

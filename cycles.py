@@ -46,6 +46,11 @@ def plot_comparison_chart(df, series, index=False, cycle='halving', **kwargs):
         specs=[[{"secondary_y": False}]]
     )
 
+    if kwargs.get('smooth', False):
+        temp['2013 Cycle'] = temp['2013 Cycle'].rolling(14).mean()
+        temp['2017 Cycle'] = temp['2017 Cycle'].rolling(14).mean()
+        temp['2021 Cycle'] = temp['2021 Cycle'].rolling(14).mean()
+
     fig.add_trace(
         go.Scatter(x=temp.index, y=temp['2013 Cycle'], name='2013 Cycle'),
         secondary_y=False
@@ -96,10 +101,10 @@ def figures():
 
     market_cap = plot_comparison_chart(cm_data_clean_filter, 'CapMrktCurUSD', cycle='halving', index=True, title='Market Cap', y_axis_type='log')
     mvrv = plot_comparison_chart(cm_data_clean_filter, 'CapMVRVCur', cycle='halving', index=False, title='MVRV')
-    hash_rate = plot_comparison_chart(cm_data_clean_filter, 'HashRate', cycle='halving', index=True, title='Hash Rate', y_axis_type='log')
+    hash_rate = plot_comparison_chart(cm_data_clean_filter, 'HashRate', cycle='halving', index=True, title='Hash Rate (14DMA)', y_axis_type='log', smooth=True)
     vol = plot_comparison_chart(cm_data_clean_filter, 'VtyDayRet30d', cycle='halving', index=False, title='30 Day Trailing Volatility')
-    tx_vol = plot_comparison_chart(cm_data_clean_filter, 'TxTfrValAdjUSD', cycle='halving', index=True, title='On-Chain Transaction Volume', y_axis_type='log')
-    addresses = plot_comparison_chart(cm_data_clean_filter, 'AdrActCnt', cycle='halving', index=True, title='Active On-Chain Addresses')
+    tx_vol = plot_comparison_chart(cm_data_clean_filter, 'TxTfrValAdjUSD', cycle='halving', index=True, title='On-Chain Transaction Volume (14DMA)', y_axis_type='log', smooth=True)
+    addresses = plot_comparison_chart(cm_data_clean_filter, 'AdrActCnt', cycle='halving', index=True, title='Active On-Chain Addresses (14DMA)', smooth=True)
 
     children = [
         dbc.Row([
