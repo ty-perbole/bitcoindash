@@ -141,3 +141,5 @@ refresh_data_laptop.sh
 dash/
 test.sh
 data
+
+./whirlpool_stats
