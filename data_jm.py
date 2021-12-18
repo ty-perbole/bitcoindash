@@ -13,6 +13,10 @@ for order_file in os.listdir("data/jm/"):
         counterparties = []
         liquidity = []
         fees = []
+        if isinstance(orderbook, list):
+            pass
+        else:
+            orderbook = orderbook.get('offers')
         for order in orderbook:
             if order['counterparty'] not in counterparties:
                 counterparties.append(order['counterparty'])
