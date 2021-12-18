@@ -427,27 +427,27 @@ def figures(start_date, end_date, date_granularity, axis_type):
         ], justify="center"),
     ]
 
-    bisq_content = [
-        dbc.Row([
-            dbc.Col([html.H4(" ")])
-        ], justify="center"),
-
-        dcc.Graph(
-            figure=bisq_vol,
-            id='bisq_vol',
-            style={'height': CHART_HEIGHT}
-        ),
-
-        html.Details([
-            html.Summary('Tell me about Bisq BTC Volume'),
-            html.P('''BTC transactoin volume on P2P exchange Bisq, denominated in $USD.''')
-        ]),
-
-        dbc.Row([
-            dbc.Col([html.H4(" ")])
-        ], justify="center"),
-
-    ]
+    # bisq_content = [
+    #     dbc.Row([
+    #         dbc.Col([html.H4(" ")])
+    #     ], justify="center"),
+    #
+    #     dcc.Graph(
+    #         figure=bisq_vol,
+    #         id='bisq_vol',
+    #         style={'height': CHART_HEIGHT}
+    #     ),
+    #
+    #     html.Details([
+    #         html.Summary('Tell me about Bisq BTC Volume'),
+    #         html.P('''BTC transactoin volume on P2P exchange Bisq, denominated in $USD.''')
+    #     ]),
+    #
+    #     dbc.Row([
+    #         dbc.Col([html.H4(" ")])
+    #     ], justify="center"),
+    #
+    # ]
 
     children = [
         dbc.Row([
@@ -485,11 +485,11 @@ def figures(start_date, end_date, date_granularity, axis_type):
                 tab_id='joinmarket'
             ),
 
-            dbc.Tab(
-                bisq_content,
-                label='Bisq',
-                tab_id='bisq'
-            )
+            # dbc.Tab(
+            #     bisq_content,
+            #     label='Bisq',
+            #     tab_id='bisq'
+            # )
         ], id='privacy-tabs', persistence=True)
     ]
 
