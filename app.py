@@ -7,7 +7,7 @@ import datetime
 from flask import Flask, Response
 import gc
 
-import value, blockspace, security, privacy, layer2, cycles
+import value, blockspace, security, privacy, scaling, cycles
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, external_stylesheets=[dbc.themes.SLATE], eager_loading=True)
