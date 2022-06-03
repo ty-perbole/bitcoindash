@@ -100,13 +100,37 @@ def figures(start_date, end_date, date_granularity, axis_type):
         bars=len(mw_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=False)
 
-    # statecoins = chart_utils.single_axis_chart(
-    #     mw_data_clean_filter, x_series='date_period', y_series='statecoins',
-    #     title='Mercury Wallet All Time Statecoin Count', y_series_title='Statecoin Count',
-    #     # y_series_axis_format="${n},",
-    #     y_series_axis_type=axis_type, data_source='api.mercurywallet.com/summary',
-    #     bars=len(mw_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-    #     halving_lines=False)
+    statecoin_dist_count = chart_utils.generic_stacked_area_chart(
+        mw_hist_clean_filter,
+        'date_period',
+        traces=[
+            ('100000', '100K Sats'),
+            ('500000', '500K Sats'),
+            ('1000000', '1M Sats'),
+            ('5000000', '5M Sats'),
+            ('10000000', '10M Sats'),
+            ('50000000', '50M Sats'),
+
+        ],
+        title='Mercury Wallet Statecoin Distribution (Count)',
+        y_series_title='Number of Statecoins',
+        data_source='api.mercurywallet.com/summary')
+
+    statecoin_dist_value = chart_utils.generic_stacked_area_chart(
+        mw_hist_clean_filter,
+        'date_period',
+        traces=[
+            ('100000_value_weighted', '100K Sats'),
+            ('500000_value_weighted', '500K Sats'),
+            ('1000000_value_weighted', '1M Sats'),
+            ('5000000_value_weighted', '5M Sats'),
+            ('10000000_value_weighted', '10M Sats'),
+            ('50000000_value_weighted', '50M Sats'),
+
+        ],
+        title='Mercury Wallet Statecoin Distribution (Value Weighted)',
+        y_series_title='Statecoin Value (BTC)',
+        data_source='api.mercurywallet.com/summary')
 
     liquidity = chart_utils.single_axis_chart(
         mw_data_clean_filter, x_series='date_period', y_series='liquidity',
@@ -115,13 +139,6 @@ def figures(start_date, end_date, date_granularity, axis_type):
         y_series_axis_type=axis_type, data_source='api.mercurywallet.com/summary',
         bars=len(mw_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
         halving_lines=False)
-
-    # statecoin_hist = chart_utils.whirlpool_stacked_area_chart(
-    #     mw_hist_clean_filter, x_series='date_period', chart='unspent_capacity',
-    #     title='Whirlpool Unspent Capacity (BTC)', y_series_title='Unspent Capacity (BTC)',
-    #     y_series_axis_type=axis_type, data_source='Proprietary',
-    #     bars=len(unspent_data_clean_filter) <= 90 or date_granularity not in ['day', 'week'],
-    #     halving_lines=False)
 
     lightning_content = [
         dbc.Row([
@@ -276,6 +293,37 @@ def figures(start_date, end_date, date_granularity, axis_type):
         dbc.Row([
             dbc.Col([
                 dcc.Graph(
+                    figure=statecoin_dist_value,
+                    id='statecoin_dist_value',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about Statecoin distribution by value.'),
+                    html.P(
+                        '''Shows the value of statecoin UTXOs in Mercury Wallet by denomination.''')
+                ])
+            ], width={"size": 6}),
+            dbc.Col([
+                dcc.Graph(
+                    figure=statecoin_dist_count,
+                    id='statecoins',
+                    style={'height': CHART_HEIGHT}
+                ),
+                html.Details([
+                    html.Summary('Tell me about Statecoin distribution by count'),
+                    html.P(
+                        '''Shows the value of statecoin UTXOs in Mercury Wallet by denomination.''')
+                ])
+            ], width={"size": 6}),
+        ], justify="center"),
+
+        dbc.Row([
+            dbc.Col([html.H4(" ")])
+        ], justify="center"),
+
+        dbc.Row([
+            dbc.Col([
+                dcc.Graph(
                     figure=capacity_statechains,
                     id='capacity_statechains',
                     style={'height': CHART_HEIGHT}
@@ -298,38 +346,7 @@ def figures(start_date, end_date, date_granularity, axis_type):
                         '''Current number of statecoins in mercury wallet. See https://github.com/layer2tech/mercury-explorer/blob/main/api/API.md.''')
                 ])
             ], width={"size": 6}),
-        ], justify="center"),
-
-        # dbc.Row([
-        #     dbc.Col([html.H4(" ")])
-        # ], justify="center"),
-        #
-        # dbc.Row([
-        #     dbc.Col([
-        #         dcc.Graph(
-        #             figure=statecoin_hist,
-        #             id='statecoin_hist',
-        #             style={'height': CHART_HEIGHT}
-        #         ),
-        #         html.Details([
-        #             html.Summary('Tell me about Statecoin histogram.'),
-        #             html.P(
-        #                 '''Shows the number of statecoin UTXOs in Mercury Wallet by denomination. ''')
-        #         ])
-        #     ], width={"size": 6}),
-        #     dbc.Col([
-        #         dcc.Graph(
-        #             figure=statecoins,
-        #             id='statecoins',
-        #             style={'height': CHART_HEIGHT}
-        #         ),
-        #         html.Details([
-        #             html.Summary('Tell me about Mercury Wallet All Time Statecoin Count'),
-        #             html.P(
-        #                 '''All time total number of statecoins. See https://github.com/layer2tech/mercury-explorer/blob/main/api/API.md.''')
-        #         ])
-        #     ], width={"size": 6}),
-        # ], justify="center")
+        ], justify="center")
     ]
 
     children = [

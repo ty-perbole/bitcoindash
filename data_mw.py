@@ -4,14 +4,14 @@ import datetime
 import utils
 
 try:
-    # Save latest data
-    mercury_stats = pd.read_csv(
-        'https://api.mercurywallet.com/summary')
-    mercury_stats.fillna(0).to_csv('./data/mw/mw_stats_{}.csv'.format(datetime.date.today().strftime("%m_%d_%y")), index=False)
-
-    mercury_hist = pd.read_csv(
-        'https://api.mercurywallet.com/histogram')
-    mercury_hist.fillna(0).to_csv('./data/mw/mw_hist_{}.csv'.format(datetime.date.today().strftime("%m_%d_%y")), index=False)
+# Save latest data
+#     mercury_stats = pd.read_csv(
+#         'http://api.mercurywallet.com/summary')
+#     mercury_stats.fillna(0).to_csv('./data/mw/mw_stats_{}.csv'.format(datetime.date.today().strftime("%m_%d_%y")), index=False)
+#
+#     mercury_hist = pd.read_csv(
+#         'http://api.mercurywallet.com/histogram')
+#     mercury_hist.fillna(0).to_csv('./data/mw/mw_hist_{}.csv'.format(datetime.date.today().strftime("%m_%d_%y")), index=False)
 
     # Build historical dataset
     mercury_stats = pd.DataFrame()
@@ -74,6 +74,8 @@ try:
         ].copy()
 
     clean_data = pd.concat(dfs, ignore_index=True)
+    for median_metric in median_metrics:
+        clean_data['{}_value_weighted'.format(median_metric)] = clean_data[median_metric] * int(median_metric) * 10 ** -8
     clean_data.to_csv('./data/mw_hist_data_clean.csv', index=False)
 except:
     pass

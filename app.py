@@ -94,8 +94,8 @@ app.layout = dbc.Container([
                     ),
 
                     dbc.Tab(
-                        label='⚡ Layer 2',
-                        tab_id='layer2'
+                        label='⚡ Scaling',
+                        tab_id='scaling'
                     ),
 
                     dbc.Tab(
@@ -170,8 +170,8 @@ def render_content(tab, start_date, end_date, date_granularity, log_linear):
         return security.figures(start_date, end_date, date_granularity, log_linear)
     elif tab == 'privacy':
         return privacy.figures(start_date, end_date, date_granularity, log_linear)
-    elif tab == 'layer2':
-        return layer2.figures(start_date, end_date, date_granularity, log_linear)
+    elif tab == 'scaling':
+        return scaling.figures(start_date, end_date, date_granularity, log_linear)
     elif tab == 'cycles':
         return cycles.figures()
     elif tab == 'donate':
