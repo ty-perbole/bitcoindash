@@ -24,14 +24,15 @@ for order_file in os.listdir("data/jm/"):
                 fees.append(order['cjfee'])
 
         fees = np.float64(fees)
+        if len(counterparties) > 0:
+            df_dict[order_file[10:14] + '-' + order_file[14:16] + '-' + order_file[16:18]] = {
+                'maker_count': len(counterparties),
+                'maker_liquidity': np.sum(liquidity) * (10 ** -8),
+                'mean_liquidity_per_maker': np.sum(liquidity) * (10 ** -8) / len(counterparties),
+                'median_liquidity_per_maker': np.median(liquidity) * (10 ** -8),
+                'cj_fee': np.median(fees[fees < 0.01])
+                }
 
-        df_dict[order_file[10:14] + '-' + order_file[14:16] + '-' + order_file[16:18]] = {
-            'maker_count': len(counterparties),
-            'maker_liquidity': np.sum(liquidity) * (10 ** -8),
-            'mean_liquidity_per_maker': np.sum(liquidity) * (10 ** -8) / len(counterparties),
-            'median_liquidity_per_maker': np.median(liquidity) * (10 ** -8),
-            'cj_fee': np.median(fees[fees < 0.01])
-        }
 
 jm_orderbook = pd.DataFrame.from_dict(df_dict, orient='index')
 jm_orderbook['date'] = jm_orderbook.index

@@ -1019,3 +1019,66 @@ def wasabi_jm_stacked_area_chart(df, cj_type='wasabi', **kwargs):
     )
 
     return fig
+
+def generic_stacked_area_chart(df, x_series, traces, **kwargs):
+    FILL_COLORS = [
+        'rgb(229.0, 89.0, 52.0)',
+        'rgb(228.8, 112.0, 52.6)',
+        'rgb(228.6, 135.0, 53.2)',
+        'rgb(228.4, 158.0, 53.8)',
+        'rgb(228.2, 181.0, 54.4)',
+        'rgb(228.0, 204.0, 55.0)',
+        'rgb(182.4, 192.0, 82.2)',
+        'rgb(136.8, 180.0, 109.4)',
+        'rgb(91.2, 168.0, 136.6)'
+    ]
+
+    x = df[x_series]
+    fig = make_subplots(
+        specs=[[{"secondary_y": False}]]
+    )
+
+    for index, trace in enumerate(traces):
+        fig.add_trace(go.Scatter(
+            x=x, y=df[trace[0]],
+            mode='lines',
+            line=dict(width=0.5, color='rgb(0, 0, 0)'),
+            fillcolor=FILL_COLORS[index],
+            fill='tonexty',
+            stackgroup='one',
+            name=trace[1],
+        ))
+
+    # Add figure title
+    fig.update_layout(
+        title_text=kwargs.get('title', ''),
+    )
+
+    # Set x-axis title
+    if kwargs.get('x_axis_title'):
+        fig.update_xaxes(title_text=kwargs.get('x_axis_title'))
+
+    fig.update_layout(
+        annotations=[
+            dict(x=1, y=-0.2,
+                 text="Data: {}".format(kwargs.get('data_source', 'Proprietary')),
+                 showarrow=False, xref='paper', yref='paper',
+                 xanchor='right', yanchor='auto', xshift=0, yshift=0)
+        ],
+        showlegend=True,
+        legend_orientation="h",
+        template="plotly_dark",
+        hovermode='x unified',
+        xaxis_showgrid=False,
+        yaxis_showgrid=False
+    )
+
+    # Set y-axes titles
+    fig.update_yaxes(
+        title_text=kwargs.get('y_series_title', ''), secondary_y=False,
+        tickformat=kwargs.get('y_series_axis_format', None),
+        type=kwargs.get('y_series_axis_type', 'linear'), range=kwargs.get('y_series_axis_range'),
+        showgrid=False
+    )
+
+    return fig

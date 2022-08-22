@@ -13,6 +13,7 @@ try:
 
     cm = pd.read_csv('btc.csv')
 
+    cm['date'] = cm['time']
     cm = utils.get_extra_datetime_cols(cm, 'date')
 
     cm['BlkSizeByte'] = cm['BlkCnt'] * cm['BlkSizeMeanByte']
